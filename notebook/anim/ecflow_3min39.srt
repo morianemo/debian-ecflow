@@ -1,0 +1,86 @@
+
+1
+00:00:00,190 --> 00:00:06,800
+Welcome to ecFlow!
+...  
+
+
+2
+00:00:06,820 --> 00:00:11,280
+<b>module load</b>: does setup PATH and PYTHONPATH
+/usr/local/apps/ecflow/current/bin is usual location
+
+3
+00:00:11,300 --> 00:00:16,080
+<b>ecFlow</b> is a server, a client, and a GUI: ecflow_ui
+
+4
+00:00:16,200 --> 00:00:34,00
+<b>ecflow_start.sh</b> is used to start the server, listening ECF_PORT, working in ECF_HOME
+
+5
+00:00:34,200 --> 00:00:52,00
+<b>ecflow_client</b> is the command line client to load a suite, update it, query the server content... 
+
+6
+00:00:52,200 --> 00:00:59,00
+The definition file describes a suite and its content: tasks and their relations, their triggers, their scripts location.
+
+7
+00:00:59,200 --> 00:01:35,00
+In this example, the definition file also creates <b>head.h</b> and <b>tail.h</b> file in ECF_INCLUDE directory. They call <b>ecflow_client --init --abort --complete</b>, for the status to change.
+
+8
+00:01:40,200 --> 00:01:45,00
+Here, the definition file is a python script: by running it, the suite node is placed into ecFlow.
+
+9
+00:01:48,200 --> 00:01:57,00
+Let's start ecflow_ui: we connect to the local server on ECF_PORT 2500, in this example.
+
+10 
+00:01:58,200 --> 00:02:03,00
+The suite "course" is visible. 
+We <b>begin</b> it, to get it ready to run.
+
+11
+00:02:03,200 --> 00:02:07,00
+This suite was designed with <i>default status suspended</i> so that jobs do not start immediately.
+
+12
+00:02:08,200 --> 00:02:28,00
+Let's open the Info panel, to display Script, Edit tabs. 
+We can click Preprocess.
+
+13
+00:02:29,200 --> 00:02:33,00
+We recognise the task wrapper and the headers.
+
+14
+00:02:34,200 --> 00:02:49,00
+The model task appears in different locations: variables make the difference, for "forecast length", "pertubed forecast number", "control forecast"
+
+15
+00:02:50,200 --> 00:02:57,00
+We can execute the task, to force the job to start.
+Job file is created by ecflow and the Output file is visible.
+
+15
+00:02:58,200 --> 00:03:01,00
+When we update the GUI, acquisition task is already complete (yellow).
+
+16
+00:03:02,200 --> 00:03:22,00
+We can open the Table view and configure it to display tasks in submit, active, abort state.
+
+17
+00:03:23,200 --> 00:03:31,00
+We requeue the completed task, and resume the suite to get it start.
+
+18
+00:03:32,200 --> 00:03:39,00
+Here the suite completes. 
+Repeat attribute would get it continue with next forecast date. 
+let's learn it, practicing the tutorial...
+
+
