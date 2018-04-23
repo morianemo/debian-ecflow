@@ -12,13 +12,15 @@ RUN apt-get -y update \
     xvfb wget \
   && apt-get install -qqy x11-apps
 
+# sudo apt-get install git build-essential cmake qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools qtmultimedia5-dev libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libqt5xmlpatterns5-private-dev
+
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-4.7.0-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-4.9.0-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_53_0 \
     HTTP=https://software.ecmwf.int/wiki/download/attachments/8650755 \ 
-    TE=ecFlow-4.7.0-Source.tar.gz \
+    TE=ecFlow-4.9.0-Source.tar.gz \
     TB=boost_1_53_0.tar.gz \
     COMPILE=1
 
@@ -38,7 +40,7 @@ RUN test ${COMPILE} -eq 1 && /tmp/fix_regex.sh \
     && ${WK}/build_scripts/boost_1_53_fix.sh \
     && ${WK}/build_scripts/boost_build.sh
 
-RUN cd ${WK}/build && cmake .. -DENABLE_GUI=ON -DENABLE_UI=ON \
+RUN cd ${WK}/build && cmake .. -DENABLE_GUI=ON -DENABLE_UI=OFF \
     && make -j2 && make install # && make test && cd /tmp && rm -rf *
 
 # environment variables for ecFlow server
