@@ -1,10 +1,10 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 from __future__ import print_function
 import os
 import ecf as ecflow
-from ecf import (Defstatus, Suite, Family, Task, Variables, Label, Repeat)
+from ecf import (Defstatus, Suite, Family, Task, Variables, Label, Repeat, Defs, Client)
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
-DEFS = ecflow.Defs()
+DEFS = Defs()
 NAME = os.getenv("SUITE", "elearning")
 
 
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
     HOST = os.getenv("ECF_HOST", "localhost")
     PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
-    CLIENT = ecflow.Client(HOST, PORT)
+    CLIENT = Client(HOST, PORT)
 
     NODE = "/%s/f5" % NAME  # replace top
     CLIENT.replace(NODE, DEFS)

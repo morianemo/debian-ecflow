@@ -1,10 +1,10 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ back archive example """
 from __future__ import print_function
 import os
 import ecf as ecflow
 from ecf import (Defs, Defstatus, Suite, Family, Task, Variables, Label,
-                 Limit, Inlimit, Repeat, Trigger)
+                 Limit, Inlimit, Repeat, Trigger, Client)
 HOME = os.getenv("HOME") + "/ecflow_server"
 NAME = "back_archiving"; FILES = HOME + "/back"; DEFS = Defs()
 DEFS.add(Suite(NAME).add(
@@ -21,6 +21,6 @@ DEFS.add(Suite(NAME).add(
     ) for kind in ("analysis", "forecast", "climatology", "observations", "images")]))
 # print(DEFS); DEFS.generate_scripts(); 
 RESULT = DEFS.simulate(); print(RESULT)
-CLIENT = ecflow.Client(os.getenv("ECF_HOST", "localhost"),
+CLIENT = Client(os.getenv("ECF_HOST", "localhost"),
                        os.getenv("ECF_PORT", 2500))
 CLIENT.replace("/%s" % NAME, DEFS)

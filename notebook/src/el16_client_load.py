@@ -1,4 +1,5 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
+from __future__ import print_function
 import os
 import ecflow
 # When no arguments specified uses ECF_HOST and/or ECF_PORT,
@@ -10,7 +11,7 @@ CLIENT = ecflow.Client(HOST + ":%d" % PORT)
 try:
     CLIENT.ping()
 except RuntimeError as err:
-    print "ping failed: " + str(err)
+    print("ping failed: " + str(err))
 try:
     CLIENT.restart_server()
     print("Server was restarted")

@@ -1,8 +1,8 @@
 #!/bin/bash
 INST=/usr/local/apps/ecflow
 which ecflow_client || export PATH=$INST/bin:$INST/current/bin:$PATH
-
-LIB=lib/python2.7/site-packages
+# LIB=lib/python2.7/site-packages
+LIB=lib/python3.5/site-packages
 export PYTHONPATH=$INST/$LIB:$INST/$LIB/ecflow:$PYTHONPATH
 
 # SERVER

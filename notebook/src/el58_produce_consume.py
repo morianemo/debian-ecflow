@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 from __future__ import print_function
 from ecf import (Defstatus, Family, Task, Event, Inlimit, Label,
                  Limit, Meter, Repeat, Trigger, Variables)
@@ -48,7 +48,7 @@ def consume1(leap=1, leap_nb=3, producer="."):
             Repeat("STEP", beg+by*(loop-1), fin, by*leap_nb, kind="integer"),
             trigger("consume:STEP lt %s1/produce:STEP" % producer +
                     " or %s1/produce eq complete" % producer)))
-            for loop in xrange(1, leap_nb + 1)]
+            for loop in range(1, leap_nb + 1)]
 
 
 def consume2(beg, fin, producer="."):
@@ -57,7 +57,7 @@ def consume2(beg, fin, producer="."):
             Edit(STEP=idx),
             trigger("consume:STEP lt %s1/produce:STEP" % producer +
                     " or %s1/produce eq complete" % producer)))
-            for idx in xrange(beg, fin + 1, by)]
+            for idx in range(beg, fin + 1, by)]
 
 
 def call_consumer(selection):

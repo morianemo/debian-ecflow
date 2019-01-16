@@ -3,8 +3,10 @@
 from __future__ import print_function
 import os
 import sys
-for v in ("/4.6.0", ""): sys.path.append("/usr/local/apps/ecflow%s/lib/python2.7/site-packages/ecflow" % v)
-from ecf import (Suite, Family, Task, Meter, Event, Label, Defstatus, Variables, Trigger, Complete, Defs, Client, Repeat)
+# for v in ("/4.12.0", ""):
+# sys.path.append("/usr/local/apps/ecflow%s/lib/python3.5/site-packages/ecflow" % v)
+sys.path.append("/usr/local/lib/python3.5/site-packages/ecflow")
+from ecf import (Suite, Family, Task, Meter, Event, Label, Defstatus, Edit, Trigger, Complete, Defs, Client, Repeat)
 # ecflow_start.sh # to start the server, note ECF_PORT, ECF_HOME...
 ########################################################################
 # tasks definition, with its wrapper script, to be attached to a family:
@@ -29,7 +31,7 @@ done
 ecflow_client --label info "OK"  # report a label to ecFlow""", files + name + extn)
     return Task(name).add(  # HRES
         Trigger(dependencies + " eq complete"),
-        Variables(FCLENGTH=fclen),  # python variable to suite variable
+        Edit(FCLENGTH=fclen),  # python variable to suite variable
         Meter("step", -1, fclen),
         Label("info", ""))
 
@@ -62,19 +64,19 @@ deploy("ecflow_client --label info %TASK%", files + post + extn)
 suite = Suite("course").add(
     Defstatus("suspended"),
     Repeat("YMD", 20180101, 20321212, kind="date"),
-    Variables(ECF_HOME=home,  # jobs files are created there by ecflow
-              ECF_FILES=home + "/files",  # task-wrappers location
-              ECF_INCLUDE=home + "/include",  # include files location
-              # ECF_OUT=home,  # output files location on remote systems, 
-                               # no directory created there by ecflow...
-              ECF_EXTN=extn, ),  # task wrapper extension
+    Edit(ECF_HOME=home,  # jobs files are created there by ecflow
+         ECF_FILES=home + "/files",  # task-wrappers location
+         ECF_INCLUDE=home + "/include",  # include files location
+         # ECF_OUT=home,  # output files location on remote systems, 
+         # no directory created there by ecflow...
+         ECF_EXTN=extn, ),  # task wrapper extension
     Task(acq).add(Event(1)),
     Family("ensemble").add(  # ENS
         Complete(acq + ":1"),
         [Family("%02d" % num).add(
-            Variables(ID=num),
+            Edit(ID=num),
             model(360, dependencies="../../" + acq))  # relative path...
-         for num in xrange(0, 10)]),
+         for num in range(0, 10)]),
     model(240, dependencies=acq),  # HRES
     Task(post).add(
         Trigger("model eq complete"),

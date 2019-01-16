@@ -1,8 +1,8 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ limit can be used in a trigger expression """
 import ecf as ecflow
 from ecf import (Defstatus, Family, Task, 
-                 Inlimit, Limit, Limits, Complete, Trigger, Variables)
+                 Inlimit, Limit, Limits, Complete, Trigger, Edit)
 
 
 def family_limit():
@@ -23,14 +23,14 @@ def family_limit():
                 Inlimit("../limits:prio"),
 
                 [Family("%03d" % step).add(
-                    Task("process"), Variables(STEP=step))
-                 for step in xrange(0, 120 + 1, 3)]),
+                    Task("process"), Edit(STEP=step))
+                 for step in range(0, 120 + 1, 3)]),
 
             Family("side").add(  # below: take remaining tokens
                 Inlimit("../limits:other"),
                 [Family("%03d" % step).add(
-                    Task("process"), Variables(STEP=step))
-                 for step in xrange(0, 120, 3)])))
+                    Task("process"), Edit(STEP=step))
+                 for step in range(0, 120, 3)])))
 
 
 def family_limiter():
@@ -50,11 +50,11 @@ def family_limiter():
             Family("weaker").add(  # weaker is located above, not to be shadowed
                 Trigger("../limiter:total le 10"),
                 [Family("%03d" % step).add(
-                    Task("process"), Variables(STEP=step))
-                 for step in xrange(0, 120, 3)]),
+                    Task("process"), Edit(STEP=step))
+                 for step in range(0, 120, 3)]),
 
             Family("prio").add(  # favourite shall not lead weaker to starve
                 Trigger("../limiter:total le 15"),
                 [Family("%03d" % step).add(
-                    Task("process"), Variables(STEP=step))
-                 for step in xrange(0, 120, 3)]))))
+                    Task("process"), Edit(STEP=step))
+                 for step in range(0, 120, 3)]))))

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ case block as a family example """
 import ecf as ecflow
 from ecf import (Defstatus, Family, Task, Meter, Complete, Trigger)

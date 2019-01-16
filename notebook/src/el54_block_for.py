@@ -1,7 +1,7 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ for block as a family example """
 import ecf as ecflow
-from ecf import (Family, Task, Inlimit, Label, Limit, Repeat, Variables)
+from ecf import (Family, Task, Inlimit, Label, Limit, Repeat, Edit)
 PARAMS = ["u", "v", "t", "r", "q", "w"]
 
 
@@ -24,7 +24,7 @@ def family_for():
         Family("parallel").add(
             Limit("lim", 2), Inlimit("lim"),
             [Family(param).add(
-                Variables(PARAM=param),
+                Edit(PARAM=param),
                 process().add(
                     Label("info", param)))
              for param in PARAMS]),
@@ -33,4 +33,4 @@ def family_for():
             Limit("lim", 2),
             Inlimit("lim"),
             # LIST COMPREHENSION:
-            [Task("t%d" % num) for num in xrange(1, 5 + 1)]))
+            [Task("t%d" % num) for num in range(1, 5 + 1)]))

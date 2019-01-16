@@ -1,17 +1,17 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 from __future__ import print_function
 import os
 import ecf as ecflow
-from ecf import (Defstatus, Suite, Family, Task, Variables,
-                 Time, Date, Day, Clock)
+from ecf import (Defstatus, Suite, Family, Task, Edit,
+                 Time, Date, Day, Clock, Defs, Client)
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 NAME = os.getenv("SUITE", "elearning")
-DEFS = ecflow.Defs()
+DEFS = Defs()
 DEFS.add(  # suite definition
     Suite(NAME).add(
         Clock("real"),
         Defstatus("suspended"),  # so that jobs do not start immediately
-        Variables(  # we can add multiple variables at once
+        Edit(  # we can add multiple variables at once
             ECF_HOME=ECF_HOME,  # where job files are created by ecflow
             ECF_FILES=ECF_HOME + "/files",  # where to find script templates
             ECF_INCLUDE=ECF_HOME + "/include",  # where to find head.h tail.h
@@ -40,7 +40,7 @@ if __name__ == '__main__':
             print(SCRIPT_TEMPLATE, file=t)
     HOST = os.getenv("ECF_HOST", "localhost")
     PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
-    CLIENT = ecflow.Client(HOST, PORT)
+    CLIENT = Client(HOST, PORT)
 
     NODE = "/" + NAME  # replace top, loose f1
     CLIENT.replace(NODE, DEFS)

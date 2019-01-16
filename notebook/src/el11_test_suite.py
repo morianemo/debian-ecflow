@@ -1,13 +1,13 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ a first suite """
 # from __future__ import print_function
 import os, sys
 if 0: # try:
     from ecf import (Defs, Suite, Defstatus, Variables, Task)
 else: # except ImportError, err:
-    INST = "/usr/local/apps/ecflow/lib/python2.7/site-packages/ecflow:"
+    INST = "/usr/local/apps/ecflow/lib/python3.5/site-packages/ecflow:"
     sys.path.append(INST)
-    INST = "/usr/local/lib/python2.7/site-packages/ecflow"
+    INST = "/usr/local/lib/python3.5/site-packages/ecflow"
     sys.path.append(INST)
     from ecf import (Defs, Suite, Defstatus, Variables, Task)
     if 0: raise Exception(#ERR: could not import ecf. Does the following line help?"+
