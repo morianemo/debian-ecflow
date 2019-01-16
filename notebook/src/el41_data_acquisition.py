@@ -1,16 +1,16 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ data acquisition suite example """
 from __future__ import print_function
 import os
 import ecf as ecflow
 from ecf import (Date, Day, Defs, Defstatus, Suite, Family, Task,
                  If,  # If attribute in use example
-                 Variables, Label, Repeat, Time, Trigger)
+                 Edit, Label, Repeat, Time, Trigger)
 HOME = os.getenv("HOME") + "/ecflow_course"; NAME = "data_acquisition"; DEFS = Defs()
 DEFS.add(Suite(NAME).add(
     Defstatus("suspended"),  # so that jobs do not start immediately
     Repeat(kind="day", step=1),
-    Variables(ECF_HOME=HOME, ECF_INCLUDE=HOME, ECF_FILES=HOME + "/acq", SLEEP=2),
+    Edit(ECF_HOME=HOME, ECF_INCLUDE=HOME, ECF_FILES=HOME + "/acq", SLEEP=2),
     [Family(city).add(
         Family("archive").add(
             [Family(obs_type).add(
@@ -26,7 +26,7 @@ DEFS.add(Suite(NAME).add(
         for city in ("Exeter", "Toulouse", "Offenbach", "Washington",
                      "Tokyo", "Melbourne", "Montreal")]))
 # print(DEFS); DEFS.generate_scripts(); 
-RESULT = DEFS.simulate(); print(RESULT)
+RESULT = DEFS.simulate(); # print(RESULT)
 CLIENT = ecflow.Client(os.getenv("ECF_HOST", "localhost"),
                        os.getenv("ECF_PORT", 2500))
 CLIENT.replace("/%s" % NAME, DEFS)

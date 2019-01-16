@@ -1,29 +1,29 @@
 #!/usr/bin/env python
 """ if block as a family example """
-from ecf import (Family, Task, Event, Complete, Trigger, )
+from ecf import (Family, Task, Event, Trigger, Complete)
 
 
 def family_if():
     """ if block as a family example """
-    return(
+    return [
         Family("if_then_else").add(
             Task("if").add(
-                Event(1)),
+                Event("true")),
             Task("then").add(
-                Trigger("if:1"),
-                Complete("if==complete and not if:1")),
+                Complete("if eq complete and not if:true"),
+                Trigger("if:true"), ),
             Task("else").add(
-                Complete("if:1"),
-                Trigger("if eq complete and not if:1"))),
-
+                Complete("if:true"),
+                Trigger("if eq complete and not if:true"), )),
         Family("if").add(    # one script
             Task("model").add(
-                Event(1))),
+                Event("true"))),
         Family("then").add(
-            Trigger("if/model:1"),
-            Complete("if eq complete and not if/model:1"),
+            Complete("if eq complete and not if/model:true"),
+            Trigger("if/model:true"),
             Task("model")),
         Family("else").add(
-            Complete("if/model:1"),
-            Trigger("if eq complete and not if/model:1"),
-            Task("model")))
+            Complete("if/model:true"),
+            Trigger("if eq complete and not if/model:true"),
+            Task("model")),
+        ]

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ back archive example """
 from __future__ import print_function
 import os

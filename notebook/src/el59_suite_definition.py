@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 import os
 import ecf as ecflow
 from ecf import (  # Autocancel, Clock, Cron, Today, Edit, Extern, Repeat

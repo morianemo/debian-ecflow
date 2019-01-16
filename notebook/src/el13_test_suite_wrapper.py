@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 from __future__ import print_function
 import os
 ECF_HOME = os.getenv("HOME") + "/ecflow_server"  # from ecflow_start.sh

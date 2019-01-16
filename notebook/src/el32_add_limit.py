@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 from __future__ import print_function
 import os
 import ecf as ecflow
@@ -14,7 +14,7 @@ def create_family_f5():
         Limit("l1", 2),
         Inlimit("l1"),
         Variables(SLEEP=2),
-        [Task("t%d" % tid) for tid in xrange(1, 10)])
+        [Task("t%d" % tid) for tid in range(1, 10)])
 
 
 DEFS.add(  # suite definition
@@ -35,7 +35,7 @@ NODE = "/%s/f5" % NAME  # replace f5 family
 if not os.path.exists(ECF_HOME + NODE):
     os.makedirs(ECF_HOME + NODE)
 
-for sid in xrange(1, 10):  # replace script templates
+for sid in range(1, 10):  # replace script templates
     with open(ECF_HOME + NODE + "/t%d.ecf" % sid, "w") as script:
         print(SCRIPT_TEMPLATE, file=script)
 

@@ -1,4 +1,5 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
+from __future__ import print_function
 """ ecflow client: print server content """
 import os
 import ecflow
@@ -9,4 +10,5 @@ KEY = HOST + ":%d" % PORT
 CLIENT = ecflow.Client(KEY)
 CLIENT.sync_local()  # get live content
 ecflow.PrintStyle.set_style(ecflow.Style.STATE)  # set print style
-print CLIENT.get_defs()
+print("# edit and uncomment to print defs")
+# print(CLIENT.get_defs())

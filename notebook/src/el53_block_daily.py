@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ repeat daily weekly monthly... """
 from __future__ import print_function
 from ecf import (Family, Task, Complete, Label, Repeat, Trigger)

@@ -1,4 +1,5 @@
-FROM debian:jessie
+FROM debian:stretch
+# FROM debian:jessie
 
 RUN apt-get -y update \
   && apt-get -y upgrade \
@@ -12,15 +13,13 @@ RUN apt-get -y update \
     xvfb wget \
   && apt-get install -qqy x11-apps
 
-# sudo apt-get install git build-essential cmake qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools qtmultimedia5-dev libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libqt5xmlpatterns5-private-dev
-
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-4.9.0-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-4.12.0-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_53_0 \
     HTTP=https://software.ecmwf.int/wiki/download/attachments/8650755 \ 
-    TE=ecFlow-4.9.0-Source.tar.gz \
+    TE=ecFlow-4.12.0-Source.tar.gz \
     TB=boost_1_53_0.tar.gz \
     COMPILE=1
 
@@ -28,20 +27,65 @@ ENV WK=/tmp/ecflow_build/ecFlow-4.9.0-Source \
 
 COPY fix_regex.sh /tmp/
 
-RUN mkdir -p ${WK}/build \
-    && cd /tmp/ecflow_build \
-    && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 \
-    && wget --output-document=${TB} ${HTTP}/${TB}?api=v2 \
-    && tar -zxvf ${TE} \
-    && tar -zxvf ${TB} 
+RUN mkdir -p ${WK}/build
+
+RUN rm -rf /tmp/ecflow_build
+RUN mkdir -p /tmp/ecflow_build
+
+# development
+COPY ecFlow-4.12.0-Source.tar.gz /tmp/ecflow_build/
+COPY boost_1_53_0.tar.gz /tmp/ecflow_build/
+
+# network: uncomment following line
+# RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && wget --output-document=${TB} ${HTTP}/${TB}?api=v2 \
+RUN cd /tmp/ecflow_build \    
+    && tar -xzvf ${TE} \
+    && tar -xzvf ${TB} 
+
+RUN apt-get install -y apt-utils python3-dev
 
 RUN test ${COMPILE} -eq 1 && /tmp/fix_regex.sh \
     && cd ${BOOST_ROOT} && ./bootstrap.sh \
-    && ${WK}/build_scripts/boost_1_53_fix.sh \
-    && ${WK}/build_scripts/boost_build.sh
+    && python_root=$(python3 -c "import sys; print(sys.prefix)") \
+    && ./bootstrap.sh  --with-python-root=$python_root \
+                       --with-python=/usr/bin/python3 \
+    && sed -i "s|using python : 3.5 :  ;|using python : 3 : python3 : /usr/include/python ;|g" project-config.jam \
+    && ln -sf /usr/include/python3.5m /usr/include/python \
+    && ln -sf /usr/include/python3.5m /usr/include/python3.5 \
+    && $WK/build_scripts/boost_1_53_fix.sh
 
-RUN cd ${WK}/build && cmake .. -DENABLE_GUI=ON -DENABLE_UI=OFF \
-    && make -j2 && make install # && make test && cd /tmp && rm -rf *
+# RUN apt-get install -y bjam # libboost1.62-tools-dev
+# RUN cd /tmp/ecflow_build/boost_1_53_0 && test ! -x ./bjam && cp /usr/bin/bjam .
+# COPY bjam /tmp/ecflow_build/boost_1_53_0/
+RUN cd ${BOOST_ROOT} && bash ${WK}/build_scripts/boost_build.sh
+
+COPY cmake-3.13.2.tar.gz /tmp/ecflow_build/
+RUN cd /tmp/ecflow_build/ \
+    && tar -xzf cmake-3.13.2.tar.gz \
+    && cd cmake-3.13.2 \
+    && ./configure \
+    && make && make install
+
+# uncomment following in development mode
+COPY cmake.tgz /tmp/ecflow_build/
+
+RUN cd $HOME && tar -xzf /tmp/ecflow_build/cmake.tgz
+RUN find $HOME/.
+ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root 
+RUN mkdir -p ${WK}/build \
+    && cd ${WK}/build \
+    && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_GUI=ON -DENABLE_UI=OFF \
+    && make -j2 && make install # && make test && cd /tmp
+
+RUN apt-get -y install git build-essential cmake qt5-default qtscript5-dev \
+    libssl-dev qttools5-dev qttools5-dev-tools qtmultimedia5-dev libqt5svg5-dev \
+    libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev \
+    libasound2-dev libjack-jackd2-dev libxrandr-dev
+# libqt5xmlpatterns5 libqt5xmlpatterns5-private-dev
+RUN cd ${WK}/build \
+  &&cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_GUI=ON -DENABLE_UI=ON\
+  && make -j2 && make install # && make test && cd /tmp
+# && rm -rf *
 
 # environment variables for ecFlow server
 ENV ECFLOW_USER=ecflow \
@@ -57,7 +101,6 @@ EXPOSE ${ECF_PORT}
 RUN groupadd --system ${ECFLOW_USER} \
     && useradd --create-home --system --gid ${ECFLOW_USER} ${ECFLOW_USER} \
     && chown ecflow /home/ecflow && chgrp ecflow /home/ecflow
-
 USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 from __future__ import print_function
 from ecf import (Defstatus, Family, Task, Event, Inlimit, Label,
                  Limit, Meter, Repeat, Trigger, Variables)

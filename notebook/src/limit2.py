@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ limit can be used in a trigger expression """
 import ecf as ecflow
 from ecf import (Defstatus, Family, Task, 

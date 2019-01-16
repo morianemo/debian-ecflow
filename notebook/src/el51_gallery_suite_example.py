@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 import os
 import ecf as ecflow
 from ecf import (
@@ -68,7 +68,6 @@ if __name__ == "__main__":
     CLIENT = ecflow.Client(os.getenv("ECF_HOST", "localhost"),
                            os.getenv("ECF_PORT", 2500))
     DEFS.generate_scripts()
-    RESULT = DEFS.simulate()
-    print(RESULT)
+    RESULT = DEFS.simulate(); # print(RESULT)
     NODE = '/' + SUITE.name()
     CLIENT.replace("/%s" % NODE, DEFS)

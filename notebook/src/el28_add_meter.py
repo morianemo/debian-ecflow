@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 from __future__ import print_function
 import os
 import ecf as ecflow
@@ -39,7 +39,7 @@ done
 """
 
 if __name__ == '__main__':
-    for num in xrange(1, 7 + 1):  # new script template
+    for num in range(1, 7 + 1):  # new script template
         with open(ECF_HOME + "/files/t%d.ecf" % num, "w") as t:
             print(t)
     HOST = os.getenv("ECF_HOST", "localhost")

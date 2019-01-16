@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 """ operational suite example """
 from __future__ import print_function
 import os
@@ -55,8 +55,7 @@ DEFS.add(Suite(NAME).add(
                  for i in range(6, LAST_STEP[cycle] + 1, 6)])))
      for cycle in ["00", "12"]]))
 DEFS.generate_scripts()
-RESULT = DEFS.simulate()
-print(RESULT)
+RESULT = DEFS.simulate(); # print(RESULT)
 CLIENT = ecflow.Client(os.getenv("ECF_HOST", "localhost"),
                        os.getenv("ECF_PORT", 2500))
 CLIENT.replace("/%s" % NAME, DEFS)
