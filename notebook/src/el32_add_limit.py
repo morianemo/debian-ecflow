@@ -2,9 +2,9 @@
 from __future__ import print_function
 import os
 import ecf as ecflow
-from ecf import (Defstatus, Suite, Family, Task, Variables, Limit, Inlimit)
+from ecf import (Defstatus, Suite, Family, Task, Variables, Limit, Inlimit, Defs, Client)
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
-DEFS = ecflow.Defs()
+DEFS = Defs()
 NAME = os.getenv("SUITE", "elearning")
 
 
@@ -42,6 +42,6 @@ for sid in range(1, 10):  # replace script templates
 if __name__ == '__main__':
     HOST = os.getenv("ECF_HOST", "localhost")
     PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
-    CLIENT = ecflow.Client(HOST, PORT)
+    CLIENT = Client(HOST, PORT)
     CLIENT.replace(NODE, DEFS)
     print("replaced node %s into" % NODE, HOST, PORT)

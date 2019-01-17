@@ -3,10 +3,10 @@ from __future__ import print_function
 import os
 import ecf as ecflow
 from ecf import (Defstatus, Suite, Family, Task, Variables, Trigger, Event,
-                 Meter)
+                 Meter, Defs, Client)
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 NAME = os.getenv("SUITE", "elearning")
-DEFS = ecflow.Defs()
+DEFS = Defs()
 DEFS.add(  # suite definition
     Suite(NAME).add(
         Defstatus("suspended"),  # so that jobs do not start immediately
@@ -25,7 +25,7 @@ DEFS.add(  # suite definition
             Task("t4").add(Trigger("t2:b")),
             Task("t5").add(Trigger("t1:step ge 24")),
             Task("t6").add(Trigger("t1:step ge 48")),
-            Task("t7").add(Trigger("t1:step ge 120")))))
+            Task("t7").add(Trigger("t1:step ge 120")), )))
 
 SCRIPT_TEMPLATE = """#!/bin/bash
 %include <head.h>
@@ -44,7 +44,7 @@ if __name__ == '__main__':
             print(t)
     HOST = os.getenv("ECF_HOST", "localhost")
     PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
-    CLIENT = ecflow.Client(HOST, PORT)
+    CLIENT = Client(HOST, PORT)
 
     NODE = "/%s/f2" % NAME  # replace only family f2
     CLIENT.replace(NODE, DEFS)

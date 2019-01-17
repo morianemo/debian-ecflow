@@ -16,4 +16,4 @@ if __name__ == '__main__':
     NAME = ECF_FILES + "/t1.ecf"
     with open(NAME, "w") as t1ecf:
         print(SCRIPT_TEMPLATE, file=t1ecf)
-    print("The script template file is now created as", NAME)
+    print("The script template file is now created:", NAME)

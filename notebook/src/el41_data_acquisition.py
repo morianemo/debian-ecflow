@@ -5,7 +5,7 @@ import os
 import ecf as ecflow
 from ecf import (Date, Day, Defs, Defstatus, Suite, Family, Task,
                  If,  # If attribute in use example
-                 Edit, Label, Repeat, Time, Trigger)
+                 Edit, Label, Repeat, Time, Trigger, Defs, Client)
 HOME = os.getenv("HOME") + "/ecflow_course"; NAME = "data_acquisition"; DEFS = Defs()
 DEFS.add(Suite(NAME).add(
     Defstatus("suspended"),  # so that jobs do not start immediately
@@ -27,6 +27,6 @@ DEFS.add(Suite(NAME).add(
                      "Tokyo", "Melbourne", "Montreal")]))
 # print(DEFS); DEFS.generate_scripts(); 
 RESULT = DEFS.simulate(); # print(RESULT)
-CLIENT = ecflow.Client(os.getenv("ECF_HOST", "localhost"),
+CLIENT = Client(os.getenv("ECF_HOST", "localhost"),
                        os.getenv("ECF_PORT", 2500))
 CLIENT.replace("/%s" % NAME, DEFS)

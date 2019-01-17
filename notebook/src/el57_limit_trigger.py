@@ -24,13 +24,13 @@ def family_limit():
 
                 [Family("%03d" % step).add(
                     Task("process"), Variables(STEP=step))
-                 for step in xrange(0, 120 + 1, 3)]),
+                 for step in range(0, 120 + 1, 3)]),
 
             Family("side").add(  # below: take remaining tokens
                 Inlimit("../limits:other"),
                 [Family("%03d" % step).add(
                     Task("process"), Variables(STEP=step))
-                 for step in xrange(0, 120, 3)])))
+                 for step in range(0, 120, 3)])))
 
 
 def family_limiter():
@@ -51,10 +51,10 @@ def family_limiter():
                 Trigger("../limiter:total le 10"),
                 [Family("%03d" % step).add(
                     Task("process"), Variables(STEP=step))
-                 for step in xrange(0, 120, 3)]),
+                 for step in range(0, 120, 3)]),
 
             Family("prio").add(  # favourite shall not lead weaker to starve
                 Trigger("../limiter:total le 15"),
                 [Family("%03d" % step).add(
                     Task("process"), Variables(STEP=step))
-                 for step in xrange(0, 120, 3)]))))
+                 for step in range(0, 120, 3)]))))

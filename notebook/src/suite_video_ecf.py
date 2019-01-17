@@ -4,8 +4,9 @@ from __future__ import print_function
 import os
 import sys
 v = "2.7"; v = "3.5"
-for ver in ("/4.6.0", ""): sys.path.append(
-        "/usr/local/apps/ecflow%s/lib/python%s/site-packages/ecflow" % (ver, v))
+#for ver in ("/4.12.0", ""): sys.path.append(
+#        "/usr/local/apps/ecflow%s/lib/python%s/site-packages/ecflow" % (ver, v))
+sys.path.append("/usr/local/lib/python3.5/site-packages/ecflow")
 from ecf import (Suite, Family, Task, Meter, Event, Label, Defstatus,
                  Edit, Trigger, Complete, Defs, Client, Repeat)
 # ecflow_start.sh # to start the server, note ECF_PORT, ECF_HOME...
@@ -77,7 +78,7 @@ suite = Suite("course").add(
         [Family("%02d" % num).add(
             Edit(ID=num),
             model(360, dependencies="../../" + acq))  # relative path...
-         for num in xrange(0, 10)]),
+         for num in range(0, 10)]),
     model(240, dependencies=acq),  # HRES
     Task(post).add(
         Trigger("model eq complete"),

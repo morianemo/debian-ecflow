@@ -4,7 +4,7 @@ import ecf as ecflow
 from ecf import (
     # Autocancel, Client, Inlimit, Limit, Node, Repeat, Today, Cron, Extern
     Defs, Suite, Family, Task, Clock, Complete, Date, Day, Defstatus,
-    Event, Meter, Label, Late, Time, Trigger)
+    Event, Meter, Label, Late, Time, Trigger, Client)
 ecflow.USE_LATE = True
 HOME = os.getenv('HOME') + '/ecflow_server'
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
                 ffor.family_for()))
     DEFS = Defs()
     DEFS.add_suite(SUITE)
-    CLIENT = ecflow.Client(os.getenv("ECF_HOST", "localhost"),
+    CLIENT = Client(os.getenv("ECF_HOST", "localhost"),
                            os.getenv("ECF_PORT", 2500))
     DEFS.generate_scripts()
     RESULT = DEFS.simulate(); # print(RESULT)

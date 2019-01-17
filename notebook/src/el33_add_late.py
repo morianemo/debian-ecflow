@@ -4,7 +4,7 @@ from __future__ import print_function
 import os
 import ecf as ecflow
 from ecf import (Defs, Defstatus, Suite, Family, Task, Variables,
-                 Late, Limit, Inlimit)
+                 Late, Limit, Inlimit, Client)
 ecflow.USE_LATE = True
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 DEFS = Defs()
@@ -43,7 +43,7 @@ for num in range(1, 10):  # replace script templates
 if __name__ == '__main__':
     HOST = os.getenv("ECF_HOST", "localhost")
     PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
-    CLIENT = ecflow.Client(HOST, PORT)
+    CLIENT = Client(HOST, PORT)
 
     NODE = "/%s/f5" % NAME  # replace top
     CLIENT.replace(NODE, DEFS)

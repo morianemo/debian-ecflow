@@ -4,7 +4,7 @@ from __future__ import print_function
 import os
 import ecf as ecflow
 from ecf import (Defs, Defstatus, Suite, Family, Task, Variables,
-                 Label, Meter, Repeat, Trigger)
+                 Label, Meter, Repeat, Trigger, Client)
 HOME = os.getenv("HOME") + "/ecflow_server"
 LAST_STEP = {"12": 240,
              "00": 24, }
@@ -56,6 +56,6 @@ DEFS.add(Suite(NAME).add(
      for cycle in ["00", "12"]]))
 DEFS.generate_scripts()
 RESULT = DEFS.simulate(); # print(RESULT)
-CLIENT = ecflow.Client(os.getenv("ECF_HOST", "localhost"),
+CLIENT = Client(os.getenv("ECF_HOST", "localhost"),
                        os.getenv("ECF_PORT", 2500))
 CLIENT.replace("/%s" % NAME, DEFS)

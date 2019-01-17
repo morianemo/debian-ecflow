@@ -3,7 +3,7 @@ import os
 import ecf as ecflow
 from ecf import (  # Autocancel, Clock, Cron, Today, Edit, Extern, Repeat
     Complete, Date, Day, Defs, Defstatus, Event, Family, Inlimit, Label, Late,
-    Limit, Meter, Suite, Task, Time, Trigger, Variables)
+    Limit, Meter, Suite, Task, Time, Trigger, Edit, Client)
 HOME = os.getenv('HOME') + '/ecflow_server'
 
 
@@ -11,9 +11,9 @@ def create(name):
     """ suite provider """
     return Suite(name).add(
         Defstatus("suspended"),
-        Variables(ECF_INCLUDE=HOME,  # header files
-                  ECF_FILES=HOME,    # script template .ecf
-                  ECF_HOME=HOME),    # job + local output files
+        Edit(ECF_INCLUDE=HOME,  # header files
+             ECF_FILES=HOME,    # script template .ecf
+             ECF_HOME=HOME),    # job + local output files
         Family("f1").add(
             Task("t1").add(
                 Label("info", ""),
@@ -71,6 +71,6 @@ if __name__ == "__main__":
     DEFS.add_suite(SUITE)
     DEFS.generate_scripts()
     DEFS.simulate()
-    CLIENT = ecflow.Client(os.getenv("ECF_HOST", "localhost"),
-                           os.getenv("ECF_PORT", 2500))
+    CLIENT = Client(os.getenv("ECF_HOST", "localhost"),
+                    os.getenv("ECF_PORT", 2500))
     CLIENT.replace("/%s" % NAME, DEFS)
