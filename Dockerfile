@@ -24,8 +24,7 @@ ENV WK=/tmp/ecflow_build/ecFlow-4.12.0-Source \
     COMPILE=1
 
 # echo 'file=${WK}/view/src/libxec/xec_Regexp.c; add="#define NO_REGEXP"; sed -i $file -e "s:regexp.h:regex.h:"; sed -i "1i $add" "$file"' > fix_regex.sh
-
-COPY fix_regex.sh /tmp/
+# COPY fix_regex.sh /tmp/
 
 RUN mkdir -p ${WK}/build
 
@@ -33,11 +32,11 @@ RUN rm -rf /tmp/ecflow_build
 RUN mkdir -p /tmp/ecflow_build
 
 # development
-COPY ecFlow-4.12.0-Source.tar.gz /tmp/ecflow_build/
-COPY boost_1_53_0.tar.gz /tmp/ecflow_build/
+# COPY ecFlow-4.12.0-Source.tar.gz /tmp/ecflow_build/
+# COPY boost_1_53_0.tar.gz /tmp/ecflow_build/
 
 # network: uncomment following line
-# RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && wget --output-document=${TB} ${HTTP}/${TB}?api=v2 \
+RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && wget --output-document=${TB} ${HTTP}/${TB}?api=v2 
 RUN cd /tmp/ecflow_build \    
     && tar -xzvf ${TE} \
     && tar -xzvf ${TB} 
