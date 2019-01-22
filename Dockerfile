@@ -43,7 +43,8 @@ RUN cd /tmp/ecflow_build \
 
 RUN apt-get install -y apt-utils python3-dev
 
-RUN test ${COMPILE} -eq 1 && /tmp/fix_regex.sh \
+# && /tmp/fix_regex.sh 
+RUN test ${COMPILE} -eq 1 \
     && cd ${BOOST_ROOT} && ./bootstrap.sh \
     && python_root=$(python3 -c "import sys; print(sys.prefix)") \
     && ./bootstrap.sh  --with-python-root=$python_root \
@@ -57,18 +58,20 @@ RUN test ${COMPILE} -eq 1 && /tmp/fix_regex.sh \
 # RUN cd /tmp/ecflow_build/boost_1_53_0 && test ! -x ./bjam && cp /usr/bin/bjam .
 # COPY bjam /tmp/ecflow_build/boost_1_53_0/
 RUN cd ${BOOST_ROOT} && bash ${WK}/build_scripts/boost_build.sh
+ENV CM=https://github.com/Kitware/CMake/releases/download/v3.12.4/cmake-3.12.4.tar.gz
+RUN cd /tmp/ecflow_build/ && wget -O  /tmp/ecflow_build/cmake-3.tgz ${CM}
 
-COPY cmake-3.13.2.tar.gz /tmp/ecflow_build/
+# COPY cmake-3.13.2.tar.gz /tmp/ecflow_build/
 RUN cd /tmp/ecflow_build/ \
-    && tar -xzf cmake-3.13.2.tar.gz \
-    && cd cmake-3.13.2 \
-    && ./configure \
-    && make && make install
+    && tar -xzf cmake-3.tgz \
+    && cd cmake-3.* \
+    && ./configure && make && make install
 
 # uncomment following in development mode
-COPY cmake.tgz /tmp/ecflow_build/
+# COPY cmake.tgz /tmp/ecflow_build/
 
-RUN cd $HOME && tar -xzf /tmp/ecflow_build/cmake.tgz
+# DEV
+# RUN cd $HOME && tar -xzf /tmp/ecflow_build/cmake.tgz
 RUN find $HOME/.
 ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root 
 RUN mkdir -p ${WK}/build \
