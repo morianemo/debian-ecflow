@@ -21,3 +21,5 @@ convert:
 	convert anim/ecflow_status.gif ecflow_status.png && \rm ecflow_status-?.png ecflow_status-[12]?.png
 
 # pip3 install jupyter_contrib_nbextensions
+clean:
+	\rm *~ *.def.log *.depth *.flat
