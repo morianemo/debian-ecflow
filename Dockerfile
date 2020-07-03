@@ -15,9 +15,9 @@ RUN apt-get -y update \
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-5.4.0-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-5.5.0-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_71_0 \
-    TE=ecFlow-5.4.0-Source.tar.gz \
+    TE=ecFlow-5.5.0-Source.tar.gz \
     TB=boost_1_71_0.tar.gz \
     COMPILE=1 \
     HTTPB=https://dl.bintray.com/boostorg/release/1.71.0/source \
@@ -28,7 +28,7 @@ RUN rm -rf /tmp/ecflow_build
 RUN mkdir -p /tmp/ecflow_build
 
 # development
-# COPY ecFlow-5.4.0-Source.tar.gz /tmp/ecflow_build/
+# COPY ecFlow-5.5.0-Source.tar.gz /tmp/ecflow_build/
 # COPY boost_1_71_0.tar.gz /tmp/ecflow_build/
 
 # network: uncomment following line
