@@ -15,9 +15,9 @@ RUN apt-get -y update \
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-5.5.1-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-5.5.2-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_71_0 \
-    TE=ecFlow-5.5.1-Source.tar.gz \
+    TE=ecFlow-5.5.2-Source.tar.gz \
     TB=boost_1_71_0.tar.gz \
     COMPILE=0 \
     HTTPB=https://dl.bintray.com/boostorg/release/1.71.0/source \
@@ -40,7 +40,7 @@ RUN cd /tmp/ecflow_build/ \
 # COPY cmake.tgz /tmp/ecflow_build/
 
 # development
-# COPY ecFlow-5.5.1-Source.tar.gz /tmp/ecflow_build/
+# COPY ecFlow-5.5.2-Source.tar.gz /tmp/ecflow_build/
 # COPY boost_1_71_0.tar.gz /tmp/ecflow_build/
 
 # network: uncomment following line
@@ -82,6 +82,10 @@ RUN mkdir -p ${WK}/build && cd ${WK}/build \
   && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=OFF \
   && make -j2 && make install # && make test && cd /tmp
 
+RUN mkdir -p ${WK}/build && cd ${WK}/build \
+  && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON \
+  && make -j2 && make install # && make test && cd /tmp
+
 # RUN cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake && make && make install && make test && cd /tmp && rm -rf *
 
 # environment variables for ecFlow server
@@ -98,6 +102,6 @@ EXPOSE ${ECF_PORT}
 RUN groupadd --system ${ECFLOW_USER} \
     && useradd --create-home --system --gid ${ECFLOW_USER} ${ECFLOW_USER} \
     && chown ecflow /home/ecflow && chgrp ecflow /home/ecflow
-USER ecflow
+# USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
