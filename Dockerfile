@@ -78,13 +78,15 @@ RUN apt-get -y install libqt5xmlpatterns5
 RUN find $HOME/.
 ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root 
 
-RUN mkdir -p ${WK}/build && cd ${WK}/build \
-  && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=OFF \
-  && make -j2 && make install # && make test && cd /tmp
 RUN apt-get -y install libqt5widgets5 libqt5network5 libqt5gui5 libqt5svg5-dev libqt5charts5-dev doxygen
-RUN mkdir -p ${WK}/build && cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
 
-RUN  cd ${WK}/build && make -j2 && make install # && make test && cd /tmp
+RUN mkdir -p ${WK}/build && cd ${WK}/build \
+  && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON \
+  && make -j$(grep processor /proc/cpuinfo | wc -l) && make install # && make test && cd /tmp
+
+# RUN mkdir -p ${WK}/build && cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=OFF
+
+RUN cd ${WK}/build && make -j$(grep processor /proc/cpuinfo | wc -l) && make install # && make test && cd /tmp
 # RUN cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake && make && make install && make test && cd /tmp && rm -rf *
 
 # environment variables for ecFlow server
