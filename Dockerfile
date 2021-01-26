@@ -7,7 +7,7 @@ RUN apt-get -y update \
   && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
   && dpkg-reconfigure --frontend=noninteractive locales \
   && update-locale LANG=en_US.UTF-8 \
-  && apt-get install -y build-essential cmake python-dev python3-dev qtbase5-dev \
+  && apt-get install -y build-essential cmake python2-dev python3-dev qtbase5-dev \
     libmotif-dev libx11-dev libxext-dev libxpm-dev vim fvwm libxt-dev \
     xvfb wget \
   && apt-get install -qqy x11-apps
@@ -15,9 +15,9 @@ RUN apt-get -y update \
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-5.5.2-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-5.6.0-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_71_0 \
-    TE=ecFlow-5.5.2-Source.tar.gz \
+    TE=ecFlow-5.6.0-Source.tar.gz \
     TB=boost_1_71_0.tar.gz \
     COMPILE=0 \
     HTTPB=https://dl.bintray.com/boostorg/release/1.71.0/source \
@@ -40,7 +40,7 @@ RUN cd /tmp/ecflow_build/ \
 # COPY cmake.tgz /tmp/ecflow_build/
 
 # development
-# COPY ecFlow-5.5.2-Source.tar.gz /tmp/ecflow_build/
+# COPY ecFlow-5.6.0-Source.tar.gz /tmp/ecflow_build/
 # COPY boost_1_71_0.tar.gz /tmp/ecflow_build/
 
 # network: uncomment following line
@@ -66,10 +66,10 @@ RUN cd ${BOOST_ROOT} && ./bootstrap.sh \
 # DEV # COPY bjam /tmp/ecflow_build/boost_1_53_0/
 RUN cd ${BOOST_ROOT} && bash ${WK}/build_scripts/boost_build.sh
 
-# RUN apt-get -y install git build-essential cmake qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools qtmultimedia5-dev libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev
+# RUN apt-get -y install git build-essential cmake qt5-qmake qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools qtmultimedia5-dev libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev
 
 RUN apt-get -y update --fix-missing 
-RUN apt-get -y install git cmake qt5-default qtscript5-dev libssl-dev
+RUN apt-get -y install git cmake qt5-qmake qtscript5-dev libssl-dev qtbase5-dev
 # RUN apt-get -y install qttools5-dev qttools5-dev-tools qtmultimedia5-dev libqt5svg5-dev libqt5webkit5-dev
 RUN apt-get -y install libqt5xmlpatterns5 
 # libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev
@@ -81,11 +81,10 @@ ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root
 RUN mkdir -p ${WK}/build && cd ${WK}/build \
   && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=OFF \
   && make -j2 && make install # && make test && cd /tmp
+RUN apt-get -y install libqt5widgets5 libqt5network5 libqt5gui5 libqt5svg5-dev libqt5charts5-dev doxygen
+RUN mkdir -p ${WK}/build && cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
 
-RUN mkdir -p ${WK}/build && cd ${WK}/build \
-  && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON \
-  && make -j2 && make install # && make test && cd /tmp
-
+RUN  cd ${WK}/build && make -j2 && make install # && make test && cd /tmp
 # RUN cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake && make && make install && make test && cd /tmp && rm -rf *
 
 # environment variables for ecFlow server
