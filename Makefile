@@ -2,7 +2,10 @@ CONT=ecflow-debian
 
 all:
 	docker build -t ${CONT} .
-
+pod:
+	podman build --tag ${CONT} -f Dockerfile
+pod-run:
+	podman run ${CONT} ecflow_client --help
 ash:
 	docker run --net=host -ti ${CONT} bash
 
