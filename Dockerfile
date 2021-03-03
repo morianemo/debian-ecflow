@@ -15,9 +15,9 @@ RUN apt-get -y update \
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-5.5.2-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-5.6.0-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_71_0 \
-    TE=ecFlow-5.5.2-Source.tar.gz \
+    TE=ecFlow-5.6.0-Source.tar.gz \
     TB=boost_1_71_0.tar.gz \
     COMPILE=0 \
     HTTPB=https://dl.bintray.com/boostorg/release/1.71.0/source \
@@ -40,7 +40,7 @@ RUN cd /tmp/ecflow_build/ \
 # COPY cmake.tgz /tmp/ecflow_build/
 
 # development
-# COPY ecFlow-5.5.2-Source.tar.gz /tmp/ecflow_build/
+# COPY ecFlow-5.6.0-Source.tar.gz /tmp/ecflow_build/
 # COPY boost_1_71_0.tar.gz /tmp/ecflow_build/
 
 # network: uncomment following line
@@ -68,34 +68,42 @@ RUN cd ${BOOST_ROOT} && bash ${WK}/build_scripts/boost_build.sh
 
 RUN apt-get -y update --fix-missing
 RUN apt-get -y install git cmake qtscript5-dev libssl-dev
-RUN apt-get -y install git cmake qtscript5-dev libssl-dev
-# RUN apt-get -y install git cmake qt5-default qtscript5-dev libssl-dev
+#RUN apt-get -y install git cmake qt5-qmake qtscript5-dev libssl-dev qtbase5-dev
+
 # RUN apt-get -y install qttools5-dev qttools5-dev-tools qtmultimedia5-dev libqt5svg5-dev libqt5webkit5-dev
 RUN apt-get -y install libqt5xmlpatterns5 
 # libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev
 
-# # DEV # RUN cd $HOME && tar -xzf /tmp/ecflow_build/cmake.tgz
-# RUN find $HOME/.
-# ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root 
+# DEV # RUN cd $HOME && tar -xzf /tmp/ecflow_build/cmake.tgz
+RUN find $HOME/.
+ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root 
 
-RUN mkdir -p ${WK}/build && cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=OFF 
-RUN cd ${WK}/build && make -j2 && make install # && make test && cd /tmp
+RUN apt-get -y install libqt5widgets5 libqt5network5 libqt5gui5 libqt5svg5-dev libqt5charts5-dev doxygen
 
-# RUN mkdir -p ${WK}/build && cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
-# RUN cd ${WK}/build && make -j2 && make install
+RUN mkdir -p ${WK}/build && cd ${WK}/build \
+  && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON \
+  && make -j$(grep processor /proc/cpuinfo | wc -l) && make install # && make test && cd /tmp
 
-# # RUN cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake && make && make install && make test && cd /tmp && rm -rf *
+# RUN mkdir -p ${WK}/build && cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=OFF
 
-# ENV ECFLOW_USER=ecflow \
-#     ECF_PORT=2500 \
-#     ECF_HOME=/home/ecflow \
-#     HOME=/home/ecflow \
-#     HOST=ecflow \
-#     LANG=en_US.UTF-8 \
-#     PYTHONPATH=/usr/local/lib/python3.7/site-packages
-# EXPOSE ${ECF_PORT}
-# RUN groupadd --system ${ECFLOW_USER} \
-#     && useradd --create-home --system --gid ${ECFLOW_USER} ${ECFLOW_USER} \
-#     && chown ecflow /home/ecflow && chgrp ecflow /home/ecflow
-# WORKDIR /home/ecflow
-# ENV DISPLAY=:0
+RUN cd ${WK}/build && make -j$(grep processor /proc/cpuinfo | wc -l) && make install # && make test && cd /tmp
+# RUN cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake && make && make install && make test && cd /tmp && rm -rf *
+
+# environment variables for ecFlow server
+ENV ECFLOW_USER=ecflow \
+    ECF_PORT=2500 \
+    ECF_HOME=/home/ecflow \
+    HOME=/home/ecflow \
+    HOST=ecflow \
+    LANG=en_US.UTF-8 \
+    PYTHONPATH=/usr/local/lib/python3.7/site-packages
+
+EXPOSE ${ECF_PORT}
+
+RUN groupadd --system ${ECFLOW_USER} \
+    && useradd --create-home --system --gid ${ECFLOW_USER} ${ECFLOW_USER} \
+    && chown ecflow /home/ecflow && chgrp ecflow /home/ecflow
+# USER ecflow
+WORKDIR /home/ecflow
+ENV DISPLAY=:0
+
