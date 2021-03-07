@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:buster
 
 RUN apt-get -y update \
   && apt-get -y upgrade \
@@ -61,21 +61,10 @@ RUN cd ${BOOST_ROOT} && ./bootstrap.sh \
   && ln -sf /usr/include/python3.7m /usr/include/python3.7 \
   && sed -i -e 's/1690/1710/' ${WK}/build_scripts/boost_build.sh 
 
-# DEV # RUN apt-get install -y bjam # libboost1.62-tools-dev
-# DEV #RUN cd /tmp/ecflow_build/boost_1_53_0 && test ! -x ./bjam && cp /usr/bin/bjam .
-# DEV # COPY bjam /tmp/ecflow_build/boost_1_53_0/
 RUN cd ${BOOST_ROOT} && bash ${WK}/build_scripts/boost_build.sh
 
 RUN apt-get -y update --fix-missing
-RUN apt-get -y install git cmake qtscript5-dev libssl-dev
-#RUN apt-get -y install git cmake qt5-qmake qtscript5-dev libssl-dev qtbase5-dev
-
-# RUN apt-get -y install qttools5-dev qttools5-dev-tools qtmultimedia5-dev libqt5svg5-dev libqt5webkit5-dev
-RUN apt-get -y install libqt5xmlpatterns5 
-# libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev
-
-# DEV # RUN cd $HOME && tar -xzf /tmp/ecflow_build/cmake.tgz
-RUN find $HOME/.
+RUN apt-get -y install --fix-missing apt-utils qtscript5-dev libssl-dev
 ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root 
 
 RUN apt-get -y install libqt5widgets5 libqt5network5 libqt5gui5 libqt5svg5-dev libqt5charts5-dev doxygen
