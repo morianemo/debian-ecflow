@@ -81,7 +81,7 @@ RUN cd ${WK}/build && make -j$(grep processor /proc/cpuinfo | wc -l) && make ins
 # environment variables for ecFlow server
 ENV ECFLOW_USER=ecflow \
     ECF_PORT=2500 \
-    ECF_HOME=/home/ecflow \
+    ECF_HOME=/home/ecflow/ecflow_server \
     HOME=/home/ecflow \
     HOST=ecflow \
     LANG=en_US.UTF-8 \
@@ -92,7 +92,9 @@ EXPOSE ${ECF_PORT}
 RUN groupadd --system ${ECFLOW_USER} \
     && useradd --create-home --system --gid ${ECFLOW_USER} ${ECFLOW_USER} \
     && chown ecflow /home/ecflow && chgrp ecflow /home/ecflow
-# USER ecflow
+USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
+
+RUN mkdir $ECF_HOME && echo "5.6.0 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
 
