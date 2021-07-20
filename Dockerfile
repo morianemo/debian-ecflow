@@ -15,12 +15,12 @@ RUN apt-get -y update \
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-5.6.0-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-5.7.0-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_71_0 \
-    TE=ecFlow-5.6.0-Source.tar.gz \
+    TE=ecFlow-5.7.0-Source.tar.gz \
     TB=boost_1_71_0.tar.gz \
     COMPILE=0 \
-    HTTPB=https://dl.bintray.com/boostorg/release/1.71.0/source \
+    HTTPB=https://boostorg.jfrog.io/artifactory/main/release/1.71.0/source/${TB} \
     HTTP=https://software.ecmwf.int/wiki/download/attachments/8650755
 
 RUN mkdir -p ${WK}/build
@@ -34,7 +34,7 @@ RUN cd /tmp/ecflow_build/ && wget -O  /tmp/ecflow_build/cmake-3.tgz ${CM}
 RUN cd /tmp/ecflow_build/ \
     && tar -xzf cmake-3.tgz \
     && cd cmake-3.* \
-    && ./configure && make && make install
+    && ./configure && make -j$(grep processor /proc/cpuinfo | wc -l) && make install
 
 # uncomment following in development mode
 # COPY cmake.tgz /tmp/ecflow_build/
