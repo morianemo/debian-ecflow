@@ -15,9 +15,9 @@ RUN apt-get -y update \
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-5.7.0-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-5.7.1-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_71_0 \
-    TE=ecFlow-5.7.0-Source.tar.gz \
+    TE=ecFlow-5.7.1-Source.tar.gz \
     TB=boost_1_71_0.tar.gz \
     COMPILE=0 \
     HTTPB=https://boostorg.jfrog.io/artifactory/main/release/1.71.0/source/${TB} \

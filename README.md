@@ -1,5 +1,5 @@
 # debian-ecflow
-ecflow ecflowview ecflow_ui
+ECMWF ecflow ecflow_ui
 https://software.ecmwf.int/wiki/display/ECFLOW/Documentation
 
 img=ecflow-debian 
