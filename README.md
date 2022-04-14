@@ -1,6 +1,6 @@
 # debian-ecflow
 ECMWF ecflow ecflow_ui
-https://software.ecmwf.int/wiki/display/ECFLOW/Documentation
+https://confluence.ecmwf.int/display/ECFLOW/Documentation
 
 img=ecflow-debian 
 docker build -t $img .
@@ -21,3 +21,6 @@ make client.x
 ECF_PORT=2500 ./client.x
 https://mybinder.org/v2/gh/morianemo/debian-ecflow/master?filepath=notebook%2FecFlow.ipynb
 https://mybinder.org/v2/gh/morianemo/debian-ecflow/master
+
+# run with ssl:
+https://confluence.ecmwf.int/display/ECFLOW/Open+ssl

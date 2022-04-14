@@ -15,13 +15,13 @@ RUN apt-get -y update \
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-5.7.1-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-5.8.3-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_71_0 \
-    TE=ecFlow-5.7.1-Source.tar.gz \
+    TE=ecFlow-5.8.3-Source.tar.gz \
     TB=boost_1_71_0.tar.gz \
     COMPILE=0 \
     HTTPB=https://boostorg.jfrog.io/artifactory/main/release/1.71.0/source/${TB} \
-    HTTP=https://software.ecmwf.int/wiki/download/attachments/8650755
+    HTTP=https://confluence.ecmwf.int/download/attachments/8650755
 
 RUN mkdir -p ${WK}/build
 RUN rm -rf /tmp/ecflow_build
@@ -57,9 +57,9 @@ RUN cd ${BOOST_ROOT} && ./bootstrap.sh \
   && python_root=$(python3 -c "import sys; print(sys.prefix)") \
   && ./bootstrap.sh --with-python-root=$python_root --with-python=/usr/bin/python3\
   && sed -i "s|using python : 3.7 :  ;|using python : 3 : python3 : /usr/include/python ;|g" project-config.jam \
-  && ln -sf /usr/include/python3.7m /usr/include/python \
-  && ln -sf /usr/include/python3.7m /usr/include/python3.7 \
-  && sed -i -e 's/1690/1710/' ${WK}/build_scripts/boost_build.sh 
+#  && ln -sf /usr/include/python3.7m /usr/include/python 
+#  && ln -sf /usr/include/python3.7m /usr/include/python3.7 
+sed -i -e 's/1690/1710/' ${WK}/build_scripts/boost_build.sh 
 
 RUN cd ${BOOST_ROOT} && bash ${WK}/build_scripts/boost_build.sh
 
@@ -85,7 +85,7 @@ ENV ECFLOW_USER=ecflow \
     HOME=/home/ecflow \
     HOST=ecflow \
     LANG=en_US.UTF-8 \
-    PYTHONPATH=/usr/local/lib/python3.7/site-packages
+    PYTHONPATH=/usr/local/lib/python3.8/site-packages
 
 EXPOSE ${ECF_PORT}
 
@@ -97,4 +97,3 @@ WORKDIR /home/ecflow
 ENV DISPLAY=:0
 
 RUN mkdir $ECF_HOME && echo "5.6.0 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
-
