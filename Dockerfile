@@ -7,7 +7,7 @@ RUN apt-get -y update \
   && sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
   && dpkg-reconfigure --frontend=noninteractive locales \
   && update-locale LANG=en_US.UTF-8 \
-  && apt-get install -y build-essential cmake python2-dev python3-dev qtbase5-dev \
+  && apt-get install -y build-essential cmake python3-dev qtbase5-dev \
     libmotif-dev libx11-dev libxext-dev libxpm-dev vim fvwm libxt-dev \
     xvfb wget \
   && apt-get install -qqy x11-apps
@@ -15,9 +15,9 @@ RUN apt-get -y update \
 WORKDIR /tmp
 
 # variables used for compilation, they can be removed after the built
-ENV WK=/tmp/ecflow_build/ecFlow-5.8.3-Source \
+ENV WK=/tmp/ecflow_build/ecFlow-5.10.0-Source \
     BOOST_ROOT=/tmp/ecflow_build/boost_1_71_0 \
-    TE=ecFlow-5.8.3-Source.tar.gz \
+    TE=ecFlow-5.10.0-Source.tar.gz \
     TB=boost_1_71_0.tar.gz \
     COMPILE=0 \
     HTTPB=https://boostorg.jfrog.io/artifactory/main/release/1.71.0/source/${TB} \
@@ -40,13 +40,13 @@ RUN cd /tmp/ecflow_build/ \
 # COPY cmake.tgz /tmp/ecflow_build/
 
 # development
-# COPY ecFlow-5.6.0-Source.tar.gz /tmp/ecflow_build/
+# COPY ecFlow-5.10.0-Source.tar.gz /tmp/ecflow_build/
 # COPY boost_1_71_0.tar.gz /tmp/ecflow_build/
 
 # network: uncomment following line
-RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && wget --output-document=${TB} ${HTTPB}/${TB}?api=v2 
-RUN cd /tmp/ecflow_build \    
-    && tar -xzvf ${TE} \
+#RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 \
+#    && tar -xzvf ${TE} \
+RUN cd /tmp/ecflow_build && wget --output-document=${TB} ${HTTPB}/${TB}?api=v2 \
     && tar -xzvf ${TB} 
 
 RUN ln -sf /usr/lib/x86_64-linux-gnu /usr/lib64
@@ -55,19 +55,31 @@ RUN apt-get install -y libssl1.1
 
 RUN cd ${BOOST_ROOT} && ./bootstrap.sh \
   && python_root=$(python3 -c "import sys; print(sys.prefix)") \
-  && ./bootstrap.sh --with-python-root=$python_root --with-python=/usr/bin/python3\
-  && sed -i "s|using python : 3.7 :  ;|using python : 3 : python3 : /usr/include/python ;|g" project-config.jam \
-#  && ln -sf /usr/include/python3.7m /usr/include/python 
+  && ./bootstrap.sh --with-python-root=$python_root --with-python=/usr/bin/python3
+#  && sed -i "s|using python : 3.7 :  ;|using python : 3 : python3 : /usr/include/python ;|g" project-config.jam \
+#  && sed -i -e 's/1690/1710/' ${WK}/build_scripts/boost_build.sh   
+#  && ln -sf /usr/include/python3.7 /usr/include/python 
 #  && ln -sf /usr/include/python3.7m /usr/include/python3.7 
-sed -i -e 's/1690/1710/' ${WK}/build_scripts/boost_build.sh 
 
-RUN cd ${BOOST_ROOT} && bash ${WK}/build_scripts/boost_build.sh
+# RUN cd ${BOOST_ROOT} && bash ${WK}/build_scripts/boost_build.sh
 
 RUN apt-get -y update --fix-missing
-RUN apt-get -y install --fix-missing apt-utils qtscript5-dev libssl-dev
+RUN apt-get -y install --fix-missing apt-utils qtscript5-dev libssl-dev unzip
 ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root 
 
 RUN apt-get -y install libqt5widgets5 libqt5network5 libqt5gui5 libqt5svg5-dev libqt5charts5-dev doxygen
+
+RUN cd  ${DBUILD} && wget -O ecbuild.zip \
+  https://github.com/ecmwf/ecbuild/archive/refs/heads/develop.zip && \
+  unzip ecbuild.zip && \
+  cd ecbuild-* && mkdir build && cd build && cmake ../ && make && make install
+
+RUN export ETGZ=ecFlow.zip HTTPE=https://confluence.ecmwf.int/download/attachments/8650755 \
+    && cd ${DBUILD} && wget -O ${ETGZ} \
+      https://github.com/ecmwf/ecflow/archive/refs/heads/develop.zip \
+    && unzip ${ETGZ}
+    
+RUN ln -sf ${DBUILD}/ecflow-develop ${DBUILD}/ecFlow-${ECFLOW_VERSION}-Source
 
 RUN mkdir -p ${WK}/build && cd ${WK}/build \
   && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON \
@@ -96,4 +108,4 @@ USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
 
-RUN mkdir $ECF_HOME && echo "5.6.0 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
+RUN mkdir $ECF_HOME && echo "5.10.0 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists

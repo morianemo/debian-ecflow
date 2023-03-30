@@ -1,9 +1,12 @@
 CONT=ecflow-debian
+LAST=ecflow-debian-last
 PORT=2500
 MNT = /home/ecflow/extern
 STE = test
 all:
 	docker build -t ${CONT} .
+last:
+	docker build -f Dockerfile.202209 -t ${LAST} .
 pod:
 	podman build --tag ${CONT} -f Dockerfile
 pod-run:
