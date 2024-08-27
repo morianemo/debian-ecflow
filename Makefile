@@ -6,7 +6,7 @@ STE = test
 all:
 	docker build -t ${CONT} .
 last:
-	docker build -f Dockerfile.202209 -t ${LAST} .
+	docker build -f Dockerfile.202408 -t ${LAST} .
 pod:
 	podman build --tag ${CONT} -f Dockerfile
 pod-run:
@@ -14,7 +14,7 @@ pod-run:
 ash:
 	docker run --net=host -ti ${CONT} bash
 clt:
-	dockerrun --net=host -ti ${CONT} ecflow_client --help
+	docker run --net=host -ti ${CONT} ecflow_client --help
 load:
 	echo "suite ${STE}" > ${STE}.def
 	echo "defstatus suspended" >> ${STE}.def
@@ -29,6 +29,7 @@ server:
 	docker run --net=host -ti ${CONT} ecflow_server --port ${PORT}
 view:
 	xhost +
-	docker run -e DISPLAY -v /tmp/.Xauthority:/tmp/.Xauthority --net=host -ti ${CONT} ecflow_ui
+	docker run -e DISPLAY --net=host -ti ${CONT} ecflow_ui
+    # docker run -e DISPLAY -v /tmp/.Xauthority:/tmp/.Xauthority --net=host -ti ${CONT} ecflow_ui
 conv:
 	convert -delay ${DELAY:=250} -loop 0 ecflow_status-[0-6].png ecflow_status.gif
