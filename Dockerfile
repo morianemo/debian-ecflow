@@ -60,10 +60,6 @@ RUN cd  ${DBUILD} && wget -O ecbuild.zip \
 
 RUN apt-get -y install libboost-dev git clang-format-14
 
-ENV TE=ecFlow-5.11.1-Source.tar.gz
-# network: uncomment following line
-RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && tar -xzvf ${TE}
-
 #RUN export ETGZ=ecFlow.zip HTTPE=https://confluence.ecmwf.int/download/attachments/8650755 \
 #    && cd ${DBUILD} && wget -O ${ETGZ} https://github.com/ecmwf/ecflow/archive/refs/heads/develop.zip \
 #    && unzip ${ETGZ}
@@ -80,6 +76,10 @@ RUN sed -i '/^[^#]/ s/\(^.*set(ECFLOW_BOOST_VERSION.*$\)/#\ \1/' ${WK}/ecflow/CM
 ENV BOOST_ROOT=/usr
 RUN cd ${WK}/ecflow/build && cmake -B . -S ..
 RUN cd ${WK}/ecflow/build && make -j2 && make install
+
+ENV TE=ecFlow-5.13.4-Source.tar.gz
+# network: uncomment following line
+RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && tar -xzvf ${TE}
 
 # && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
 # && make -j$(grep processor /proc/cpuinfo | wc -l) && make install # && make test && cd /tmp

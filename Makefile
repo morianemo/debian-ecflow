@@ -1,4 +1,4 @@
-CONT=ecflow-debian
+CONT=debian-ecflow
 LAST=ecflow-debian-last
 PORT=2500
 MNT = /home/ecflow/extern
@@ -15,6 +15,7 @@ ash:
 	docker run --net=host -ti ${CONT} bash
 clt:
 	docker run --net=host -ti ${CONT} ecflow_client --help
+test:	clt view svr
 load:
 	echo "suite ${STE}" > ${STE}.def
 	echo "defstatus suspended" >> ${STE}.def
