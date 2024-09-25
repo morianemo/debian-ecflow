@@ -3,6 +3,7 @@ LAST=ecflow-debian-last
 PORT=2500
 MNT = /home/ecflow/extern
 STE = test
+TAG = ${CONT}
 all:
 	docker build -t ${CONT} .
 last:
@@ -34,3 +35,11 @@ view:
     # docker run -e DISPLAY -v /tmp/.Xauthority:/tmp/.Xauthority --net=host -ti ${CONT} ecflow_ui
 conv:
 	convert -delay ${DELAY:=250} -loop 0 ecflow_status-[0-6].png ecflow_status.gif
+deploy:
+	docker login
+	docker tag ${TAG} eowyn/${TAG}:latest
+	docker push eowyn/${TAG}
+install-slim:
+	brew install docker-slim
+slim:
+	slim build --target ${TAG}:latest --tag ${TAG}:light --http-probe=false --exec "ecflow_server --version; ecflow_client --help ; ecflow_ui --h"
