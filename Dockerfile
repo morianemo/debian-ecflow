@@ -58,34 +58,35 @@ RUN cd  ${DBUILD} && wget -O ecbuild.zip \
   unzip ecbuild.zip && \
   cd ecbuild-* && mkdir build && cd build # && cmake ../ && make && make install
 
-RUN apt-get -y install libboost-dev git clang-format-14
+RUN apt-get -y install git clang-format-14
+# RUN apt-get install libboost-system1.74-dev libboost-filesystem1.74-dev
 
 #RUN export ETGZ=ecFlow.zip HTTPE=https://confluence.ecmwf.int/download/attachments/8650755 \
 #    && cd ${DBUILD} && wget -O ${ETGZ} https://github.com/ecmwf/ecflow/archive/refs/heads/develop.zip \
 #    && unzip ${ETGZ}
     
 # RUN ln -sf ${DBUILD}/ecflow-develop ${DBUILD}/ecFlow-${ECFLOW_VERSION}-Source
-RUN apt-get -y install libboost1.81-all libboost1.81-all-dev
+RUN apt-get -y install libboost1.74-all libboost1.74-all-dev
 # RUN git clone https://github.com/Kitware/CMake.git && cd CMake/ && ./configure &&  make &&   make install &&   cmake --version &&   ln -sf /usr/local/bin/cmake /usr/bin/cmake
-
+ENV BOOST_ROOT=/usr
 RUN mkdir -p ${WK} && cd ${WK} && git clone https://github.com/ecmwf/ecflow.git && cd ecflow && mkdir -p build && cd build
 RUN sed -i "s| Boost ${ECFLOW_BOOST_VERSION} REQUIRED| Boost REQUIRED |g" ${WK}/ecflow/CMakeLists.txt
 RUN sed -i "70i set ( ENABLE_STATIC_BOOST_LIBS OFF) " ${WK}/ecflow/CMakeLists.txt
 RUN sed -i "14i find_package( Boost ) " ${WK}/ecflow/CMakeLists.txt
 RUN sed -i '/^[^#]/ s/\(^.*set(ECFLOW_BOOST_VERSION.*$\)/#\ \1/' ${WK}/ecflow/CMakeLists.txt
-ENV BOOST_ROOT=/usr
-RUN cd ${WK}/ecflow/build && cmake -B . -S ..
-RUN cd ${WK}/ecflow/build && make -j2 && make install
-
-ENV TE=ecFlow-5.13.4-Source.tar.gz
+RUN apt-get -y install libboost1.74-dev git
+RUN apt-get update && apt-get install -y libboost1.74-all-dev
+# RUN apt-get -y install libboost1.74-dev git # && apt install libboost-timer
+RUN apt-get update && apt-get install -y cmake build-essential
+RUN cd ${WK}/ecflow/build && cmake -DBOOST_ROOT=/usr -B . -S .. || :
+RUN cd ${WK}/ecflow/build && cmake -DBOOST_ROOT=/usr -B . -S .. && make -j2 && make install
+# RUN cd ${WK}/ecflow/build && cmake -B . -S .. # RUN cd ${WK}/ecflow/build && make -j2 && make install
+ENV TE=ecFlow-5.13.8-Source.tar.gz
 # network: uncomment following line
 RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && tar -xzvf ${TE}
-
-# && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
+RUN cd ${WK}/ecflow/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
 # && make -j$(grep processor /proc/cpuinfo | wc -l) && make install # && make test && cd /tmp
-
 # RUN mkdir -p ${WK}/build && cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=OFF
-
 # RUN cd ${WK}/build && make -j$(grep processor /proc/cpuinfo | wc -l) && make install # && make test && cd /tmp
 # RUN cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake && make && make install && make test && cd /tmp && rm -rf *
 
@@ -107,4 +108,4 @@ RUN groupadd --system ${ECFLOW_USER} \
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
 
-RUN mkdir $ECF_HOME && echo "5.13.0 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
+RUN mkdir $ECF_HOME && echo "5.13.8 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists

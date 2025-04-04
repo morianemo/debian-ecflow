@@ -31,8 +31,8 @@ server:
 	docker run --net=host -ti ${CONT} ecflow_server --port ${PORT}
 view:
 	xhost +
-	docker run -e DISPLAY --net=host -ti ${CONT} ecflow_ui
-    # docker run -e DISPLAY -v /tmp/.Xauthority:/tmp/.Xauthority --net=host -ti ${CONT} ecflow_ui
+        docker run -e DISPLAY -v /tmp/.Xauthority:/tmp/.Xauthority --net=host -ti ${CONT} ecflow_ui
+	# docker run -e DISPLAY --net=host -ti ${CONT} ecflow_ui
 conv:
 	convert -delay ${DELAY:=250} -loop 0 ecflow_status-[0-6].png ecflow_status.gif
 deploy:
