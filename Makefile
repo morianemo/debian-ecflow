@@ -43,3 +43,7 @@ install-slim:
 	brew install docker-slim
 slim:
 	slim build --target ${TAG}:latest --tag ${TAG}:light --http-probe=false --exec "ecflow_server --version; ecflow_client --help ; ecflow_ui --h"
+deploy:
+	docker login
+	docker tag ${TAG} eowyn/${TAG}:latest
+	docker push eowyn/${TAG}
