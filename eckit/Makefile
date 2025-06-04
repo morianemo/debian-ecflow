@@ -9,3 +9,7 @@ ash:
 	docker run --net=host -ti ${TAG} bash
 test:
 	docker run --net=host -ti ${TAG} eckit-codec-list
+deploy:
+	docker login
+	docker tag ${TAG} eowyn/${TAG}:latest
+	docker push eowyn/${TAG}

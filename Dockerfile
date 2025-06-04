@@ -53,6 +53,9 @@ ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root
 
 RUN apt-get -y install libqt5widgets5 libqt5network5 libqt5gui5 libqt5svg5-dev libqt5charts5-dev doxygen
 
+# RUN apt-get -y install libqt6*
+# 5widgets6 libqt5network6 libqt5gui6 libqt5svg-de6v libqt5charts6-dev doxygen libqt6widgets6*
+
 RUN cd  ${DBUILD} && wget -O ecbuild.zip \
   https://github.com/ecmwf/ecbuild/archive/refs/heads/develop.zip && \
   unzip ecbuild.zip && \
@@ -90,6 +93,7 @@ RUN cd ${WK}/ecflow/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_U
 # RUN cd ${WK}/build && make -j$(grep processor /proc/cpuinfo | wc -l) && make install # && make test && cd /tmp
 # RUN cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake && make && make install && make test && cd /tmp && rm -rf *
 
+RUN apt install -y rsync
 # environment variables for ecFlow server
 ENV ECFLOW_USER=ecflow \
     ECF_PORT=2500 \
@@ -107,5 +111,7 @@ RUN groupadd --system ${ECFLOW_USER} \
 # USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
-
+ENV TE=ecFlow-5.13.8-Source
 RUN mkdir $ECF_HOME && echo "5.13.8 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
+# RUN rsync $TE src
+# RUN mkdir build && cdbuild &&  cmake -DBOOST_ROOT=/usr -B $WDIR -S ../src/$TE > out.tmp 2>&!
