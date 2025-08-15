@@ -89,7 +89,7 @@ RUN cd ${WK}/ecflow/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_U
 # RUN mkdir -p ${WK}/build && cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=OFF
 # RUN cd ${WK}/build && make -j$(grep processor /proc/cpuinfo | wc -l) && make install # && make test && cd /tmp
 # RUN cd ${WK}/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake && make && make install && make test && cd /tmp && rm -rf *
-
+RUN apt-get clean  && rm -rf /var/lib/apt/lists/*
 # environment variables for ecFlow server
 ENV ECFLOW_USER=ecflow \
     ECF_PORT=2500 \
