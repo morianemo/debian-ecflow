@@ -6,6 +6,8 @@ STE = test
 TAG = ${CONT}
 all:
 	docker build -t ${CONT} .
+asecflow:
+	cd as_ecflow && docker -t debian-as-ecflow .
 last:
 	docker build -f Dockerfile.202408 -t ${LAST} .
 pod:
