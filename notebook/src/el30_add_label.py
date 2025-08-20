@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 from __future__ import print_function
 import os
-import ecf as ecflow
-from ecf import (Defstatus, Suite, Family, Task, Variables, Label, Meter,
+from ecflow import (Defstatus, Suite, Family, Task, Edit, Label, Meter,
                  Defs, Client)
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 ECF_INCLUDE = ECF_HOME + "/include"
@@ -11,7 +10,7 @@ DEFS = Defs()
 DEFS.add(  # suite definition
     Suite(NAME).add(
         Defstatus("suspended"),  # so that jobs do not start immediately
-        Variables(  # we can add multiple variables at once
+        Edit(  # we can add multiple variables at once
             ECF_HOME=ECF_HOME,  # where job files are created by ecflow
             ECF_FILES=ECF_HOME + "/files",  # where to find script template
             ECF_INCLUDE=ECF_INCLUDE,  # where to find head.h tail.h

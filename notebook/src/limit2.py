@@ -1,15 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ limit can be used in a trigger expression """
-import ecf as ecflow
-from ecf import (Defstatus, Family, Task, 
-                 Inlimit, Limit, Limits, Complete, Trigger, Edit)
+from ecflow.ecf import (Defstatus, Family, Task, 
+                 InLimit, Limit, Complete, Trigger, Edit)
 
 
 def family_limit():
     """ example """
     return (
         Family("limits").add(
-            Limits({"total": 15,
+            Limit({"total": 15,
                     "prio": 10,
                     "other": 20}),  # use dictionnary
             Defstatus("complete")),

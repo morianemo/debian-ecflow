@@ -1,13 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ for block as a family example """
-import ecf as ecflow
-from ecf import (Family, Task, Inlimit, Label, Limit, Repeat, Edit)
+from ecflow.ecf import (Family, Task, InLimit, Label, Limit, Repeat, Edit)
 PARAMS = ["u", "v", "t", "r", "q", "w"]
 
 
 def process():
     """ provide leaf task """
-    return ecflow.Task("process")
+    return Task("process")
 
 
 def family_for():
@@ -22,7 +21,7 @@ def family_for():
             Repeat("PARAM", PARAMS, kind="string")),
 
         Family("parallel").add(
-            Limit("lim", 2), Inlimit("lim"),
+            Limit("lim", 2), InLimit("lim"),
             [Family(param).add(
                 Edit(PARAM=param),
                 process().add(
@@ -31,6 +30,7 @@ def family_for():
 
         Family("explode").add(
             Limit("lim", 2),
-            Inlimit("lim"),
+            InLimit("lim"),
             # LIST COMPREHENSION:
-            [Task("t%d" % num) for num in range(1, 5 + 1)]))
+            [Task("t%d" % num) for num in range(1, 5 + 1)])
+    )

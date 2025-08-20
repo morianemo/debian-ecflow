@@ -1,8 +1,7 @@
-#!/usr/bin/env python
-from __future__ import print_function
+#!/usr/bin/env python3
 import os
-import ecf as ecflow
-from ecf import (Defstatus, Suite, Family, Task, Variables)
+import ecflow
+from ecflow import (Defstatus, Suite, Family, Task, Edit)
 print("Creating suite definition")
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 NAME = os.getenv("SUITE", "elearning")
@@ -10,7 +9,7 @@ DEFS = ecflow.Defs()
 DEFS.add(  # suite definition
     Suite(NAME).add(
         Defstatus("suspended"),  # so that jobs do not start immediately
-        Variables(ECF_HOME=ECF_HOME,
+        Edit(ECF_HOME=ECF_HOME,
                   ECF_FILES=ECF_HOME + "/files",
                   ECF_INCLUDE=ECF_HOME + "/include"),
         Family("f1").add(  # hosting family

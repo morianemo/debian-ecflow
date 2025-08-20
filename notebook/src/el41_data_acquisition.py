@@ -1,9 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ data acquisition suite example """
-from __future__ import print_function
 import os
-import ecf as ecflow
-from ecf import (Date, Day, Defs, Defstatus, Suite, Family, Task,
+from ecflow.ecf import (Date, Day, Defs, Defstatus, Suite, Family, Task,
                  If,  # If attribute in use example
                  Edit, Label, Repeat, Time, Trigger, Defs, Client)
 HOME = os.getenv("HOME") + "/ecflow_course"; NAME = "data_acquisition"; DEFS = Defs()

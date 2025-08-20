@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import os
-import ecf as ecflow
-from ecf import (  # Autocancel, Clock, Cron, Today, Edit, Extern, Repeat
+from ecflow.ecf import (  # Autocancel, Clock, Cron, Today, Edit, Extern, Repeat
     Complete, Date, Day, Defs, Defstatus, Event, Family, Inlimit, Label, Late,
     Limit, Meter, Suite, Task, Time, Trigger, Edit, Client)
 HOME = os.getenv('HOME') + '/ecflow_server'
@@ -47,7 +46,7 @@ if __name__ == "__main__":
     NAME = os.getenv("SUITE", "elearning")
     DEFS = Defs()
     SUITE = create(NAME)
-    if True:
+    if False:
         import ex1, ex1s, ex2, ex2s, ex3, ex4
         SUITE.add(Family("exercises").add(
             ex1.time_and_dates(),

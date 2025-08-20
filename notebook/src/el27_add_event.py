@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 from __future__ import print_function
 import os
-import ecf as ecflow
-from ecf import (Defstatus, Suite, Family, Task, Edit, Trigger, Event, Defs, Client)
+import ecflow
+from ecflow import (Defstatus, Suite, Family, Task, Edit, Trigger, Event, Defs, Client)
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 NAME = os.getenv("SUITE", "elearning")
 DEFS = Defs()

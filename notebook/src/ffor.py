@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 """ for block as a family example """
-import ecf as ecflow
-from ecf import (Family, Task, Inlimit, Label, Limit, Repeat, Edit)
+from ecflow.ecf import (Family, Task, Inlimit, Label, Limit, Repeat, Edit)
 PARAMS = ["u", "v", "t", "r", "q", "w"]
 
 

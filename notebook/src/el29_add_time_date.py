@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 from __future__ import print_function
 import os
-import ecf as ecflow
-from ecf import (Defstatus, Suite, Family, Task, Edit,
+import ecflow
+from ecflow import (Defstatus, Suite, Family, Task, Edit, Clock,
                  Time, Date, Day, Clock, Defs, Client)
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 NAME = os.getenv("SUITE", "elearning")
 DEFS = Defs()
 DEFS.add(  # suite definition
     Suite(NAME).add(
-        Clock("real"),
+        Clock(False),  # "real"
         Defstatus("suspended"),  # so that jobs do not start immediately
         Edit(  # we can add multiple variables at once
             ECF_HOME=ECF_HOME,  # where job files are created by ecflow

@@ -1,12 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ case block as a family example """
-import ecf as ecflow
-from ecf import (Defstatus, Family, Task, Meter, Complete, Trigger)
-
-
-class Edit(ecflow.Variables):
-    """ edit is used in text suite definition for variables """
-    pass  # rename attribute
+from ecflow import (Defstatus, Family, Task, Edit, Meter, Complete, Trigger)
 
 
 def family_case():

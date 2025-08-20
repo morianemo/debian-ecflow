@@ -1,9 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ operational suite example """
 from __future__ import print_function
 import os
-import ecf as ecflow
-from ecf import (Defs, Defstatus, Suite, Family, Task, Variables,
+import ecflow
+from ecflow.ecf import (Defs, Defstatus, Suite, Family, Task, Edit,
                  Label, Meter, Repeat, Trigger, Client)
 HOME = os.getenv("HOME") + "/ecflow_server"
 LAST_STEP = {"12": 240,
@@ -21,12 +21,12 @@ DEFS = Defs()
 DEFS.add(Suite(NAME).add(
     Defstatus("suspended"),  # so that jobs do not start immediately
     Repeat(kind="day", step=1),
-    Variables(ECF_HOME=HOME,
+    Edit(ECF_HOME=HOME,
               ECF_INCLUDE=HOME + "/include",
               ECF_FILES=HOME + "/files"),
     [Family(str(cycle)).add(
-        Variables(CYCLE=cycle,
-                  LAST_STEP=LAST_STEP[cycle]),
+        Edit(CYCLE=cycle,
+             LAST_STEP=LAST_STEP[cycle]),
         cycle_trigger(cycle),
 
         Family("analysis").add(
@@ -43,13 +43,13 @@ DEFS.add(Suite(NAME).add(
 
         Family("archive").add(
             Family("analysis").add(
-                Variables(TYPE="analysis",
-                          STEP=0),
+                Edit(TYPE="analysis",
+                     STEP=0),
                 Trigger(["../analysis/run_analysis", ]),
                 Task("save"),
                 [Family("step_%02d" % i).add(
-                    Variables(TYPE="forecast",
-                              STEP=i),
+                    Edit(TYPE="forecast",
+                         STEP=i),
                     Trigger("../../forecast/run_forecast:step ge %d" % i),
                     Task("save"))
                  for i in range(6, LAST_STEP[cycle] + 1, 6)])))

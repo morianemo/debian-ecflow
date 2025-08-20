@@ -1,17 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import os
-import ecf as ecflow
-from ecf import (
+import ecflow
+from ecflow.ecf import (
     # Autocancel, Client, Inlimit, Limit, Node, Repeat, Today, Cron, Extern
-    Defs, Suite, Family, Task, Clock, Complete, Date, Day, Defstatus,
+    Defs, Suite, Family, Task, Clock, Complete, Date, Day, Defstatus, Edit,
     Event, Meter, Label, Late, Time, Trigger, Client)
-ecflow.USE_LATE = True
+ecflow.ecf.USE_LATE = True
 HOME = os.getenv('HOME') + '/ecflow_server'
-
-
-class Edit(ecflow.Variables):
-    pass  # rename attribute
-
 
 def create(name=os.getenv("SUITE", "elearning")):
     return Suite(name).add(

@@ -2,7 +2,7 @@
 from __future__ import print_function
 """ add another task, another manual """
 import os
-from ecf import (Defs, Defstatus, Suite, Variable, Task, Client)
+from ecflow import (Defs, Defstatus, Suite, Edit, Task, Client)
 print("Creating suite definition")
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 NAME = os.getenv("SUITE", "elearning")
@@ -10,7 +10,7 @@ DEFS = Defs()
 DEFS.add(  # suite definition
     Suite(NAME).add(
         Defstatus("suspended"),  # so that jobs do not start immediately
-        Variable("ECF_HOME", ECF_HOME),
+        Edit(ECF_HOME=ECF_HOME),
         Task("t1"),  # first task
         Task("t2"),  # second task
     ))

@@ -1,14 +1,9 @@
-#!/usr/bin/env python
-from __future__ import print_function
-from ecf import (Defstatus, Family, Task, Event, Inlimit, Label,
-                 Limit, Meter, Repeat, Trigger, Variables)
+#!/usr/bin/env python3
+from ecflow.ecf import (Defstatus, Family, Task, Event, Inlimit, Label,
+                 Limit, Meter, Repeat, Trigger, Edit)
 beg = 0
 fin = 48
 by = 3
-
-
-class Edit(Variables):
-    pass  # rename
 
 
 def not_consumer():

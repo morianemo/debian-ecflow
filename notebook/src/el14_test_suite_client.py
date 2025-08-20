@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
 import os
 import ecflow
 from ecflow import Client, Defs
@@ -17,6 +16,7 @@ try:
 except RuntimeError as err:
     print("#ERR: ping failed: " + str(err))
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
+os.makedirs(ECF_HOME, exist_ok=True)
 DEFS = ECF_HOME + "/%s.def" % NAME
 try:  # read definition from disk and load into the server:
     CLIENT.load("%s.def" % ECF_HOME + NAME)

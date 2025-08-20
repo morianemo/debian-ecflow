@@ -1,8 +1,6 @@
-#!/usr/bin/env python
-from __future__ import print_function
+#!/usr/bin/env python3
 import os
-import ecf as ecflow
-from ecf import (Defstatus, Suite, Family, Task, Variables, Limit, Inlimit, Defs, Client)
+from ecflow import (Defstatus, Suite, Family, Task, Edit, Limit, InLimit, Defs, Client)
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 DEFS = Defs()
 NAME = os.getenv("SUITE", "elearning")
@@ -12,15 +10,15 @@ def create_family_f5():
     """ provider """
     return Family("f5").add(
         Limit("l1", 2),
-        Inlimit("l1"),
-        Variables(SLEEP=2),
+        InLimit("l1"),
+        Edit(SLEEP=2),
         [Task("t%d" % tid) for tid in range(1, 10)])
 
 
 DEFS.add(  # suite definition
     Suite(NAME).add(
         Defstatus("suspended"),  # so that jobs do not start immediately
-        Variables(  # we can add multiple variables at once
+        Edit(  # we can add multiple variables at once
             ECF_HOME=ECF_HOME,  # where job files are created by ecflow
             ECF_FILES=ECF_HOME + "/files",  # where to find script templates
             ECF_INCLUDE=ECF_HOME + "/include",  # where to find head.h tail.h

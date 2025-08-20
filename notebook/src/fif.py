@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """ if block as a family example """
-from ecf import (Family, Task, Event, Trigger, Complete)
+from ecflow.ecf import (Family, Task, Event, Trigger, Complete)
 
 
 def family_if():

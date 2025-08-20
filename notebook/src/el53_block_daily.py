@@ -1,7 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ repeat daily weekly monthly... """
-from __future__ import print_function
-from ecf import (Family, Task, Complete, Label, Repeat, Trigger)
+from ecflow.ecf import (Family, Task, Complete, Label, Repeat, Trigger)
 
 
 def process():

@@ -1,31 +1,32 @@
-#!/usr/bin/env python
-from __future__ import print_function
+#!/usr/bin/env python3
 import os
-import ecf as ecflow
-from ecf import (Defstatus, Suite, Family, Task, Variables, Label, Repeat, Defs, Client)
+from ecflow.ecf import (Defstatus, Suite, Family, Task, Edit, Label, Defs, Client, Repeat)
+# RepeatDate, RepeatEnumerated, RepeatInteger)
 ECF_HOME = os.path.join(os.getenv("HOME"), "ecflow_server")
 DEFS = Defs()
 NAME = os.getenv("SUITE", "elearning")
 
-
 def create_families():
     """ provider """
-    return (
+    return [
         Family("f4").add(
-            Variables(SLEEP=2),
-            Repeat("NAME", ["a", "b", "c", "d", "e", "f"], kind="enumerated"),
+            Edit(SLEEP=2),
+            # RepeatEnumerated("NAME", ["a", "b", "c", "d", "e", "f"]),
+            Repeat("NAME", ["a", "b", "c", "d", "e", "f"], kind='enum'),
             Task("t1")),
         Family("f5").add(
-            Repeat("DATE", 20170101, 20200105, kind="date"),
+            # RepeatDate("DATE", 20170101, 20200105),
+            Repeat("DATE", 20170101, 20200105, kind='date'),
             Task("t1").add(
-                Repeat("PARAM", 1, 10, kind="integer"),
-                Label("info", ""))))
-
+                # RepeatInteger("PARAM", 1, 10),
+                Repeat("PARAM", 1, 10, kind='integer'),                
+                Label("info", "")))
+    ]
 
 DEFS.add(  # suite definition
     Suite(NAME).add(
         Defstatus("suspended"),  # so that jobs do not start immediately
-        Variables(  # we can add multiple variables at once
+        Edit(  # we can add multiple variables at once
             ECF_HOME=ECF_HOME,  # where job files are created by ecflow
             ECF_FILES=ECF_HOME + "/files",  # where to find script templates
             ECF_INCLUDE=ECF_HOME + "/include",  # where to find head.h tail.h

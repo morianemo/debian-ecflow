@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-from ecf import *
+#!/usr/bin/env python3
+from ecflow import *
 """ https://software.ecmwf.int/wiki/display/ECFLOW/Acquisition+task+pattern"""
 def acq(): return Family("acq").add(
         Complete("acq/data eq complete"),
