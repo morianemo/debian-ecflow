@@ -1,4 +1,4 @@
-CONT = ecflow-as-conda 
+CONT = ecflow-as-conda
 all: asconda
 
 asconda:
@@ -21,3 +21,7 @@ eyes:
 	podman run -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ferri/xeyes:alpine
 ash:
 	#	docker run --net=host -ti ${CONT} bash
+deploy:
+	docker login
+	docker tag ${CONT} eowyn/${CONT}:latest
+	docker push eowyn/${CONT}

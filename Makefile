@@ -1,9 +1,10 @@
 CONT=debian-ecflow
 LAST=ecflow-debian-last
-PORT=2500
+PORT=3141
 MNT = /home/ecflow/extern
 STE = test
 TAG = ${CONT}
+NOSEC = --security-opt seccomp=unconfined 
 all:
 	docker build -t ${CONT} .
 asecflow:

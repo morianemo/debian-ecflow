@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """ case block as a family example """
-from ecflow import (Defstatus, Family, Task, Edit, Meter, Complete, Trigger)
-
+from ecflow.ecf import (Defstatus, Family, Task, Edit, Meter, Complete, Trigger)
 
 def family_case():
     """ case block as a family example """
@@ -29,3 +28,6 @@ def family_case():
             Task("when_2").add(
                 Trigger("case:STEP eq 2"),
                 Complete("case eq complete"))))
+
+if __name__ == '__main__':
+    print(family_case())

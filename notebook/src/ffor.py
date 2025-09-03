@@ -33,3 +33,7 @@ def family_for():
             Inlimit("lim"),
             # LIST COMPREHENSION:
             [Task("t%d" % num) for num in range(1, 5 + 1)]))
+
+
+if __name__ == '__main__':
+    print(family_for())

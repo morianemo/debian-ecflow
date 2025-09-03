@@ -5,7 +5,7 @@ from ecflow.ecf import (Family, Task, Event, Trigger, Complete)
 
 def family_if():
     """ if block as a family example """
-    return [
+    return (
         Family("if_then_else").add(
             Task("if").add(
                 Event("true")),
@@ -26,4 +26,7 @@ def family_if():
             Complete("if/model:true"),
             Trigger("if eq complete and not if/model:true"),
             Task("model")),
-        ]
+        )
+
+if __name__ == '__main__':
+    print(family_if())

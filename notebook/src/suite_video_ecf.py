@@ -1,13 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from __future__ import print_function
 import os
 import sys
-v = "2.7"; v = "3.5"
+v = "3.12"
 #for ver in ("/4.12.0", ""): sys.path.append(
 #        "/usr/local/apps/ecflow%s/lib/python%s/site-packages/ecflow" % (ver, v))
-sys.path.append("/usr/local/lib/python3.5/site-packages/ecflow")
-from ecf import (Suite, Family, Task, Meter, Event, Label, Defstatus,
+sys.path.append("/usr/local/lib/python3.12/site-packages/ecflow")
+from ecflow.ecf import (Suite, Family, Task, Meter, Event, Label, Defstatus,
                  Edit, Trigger, Complete, Defs, Client, Repeat)
 # ecflow_start.sh # to start the server, note ECF_PORT, ECF_HOME...
 ########################################################################

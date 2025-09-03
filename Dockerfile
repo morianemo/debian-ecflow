@@ -1,5 +1,6 @@
+FROM debian:trixie
 # FROM debian:buster
-FROM debian:bookworm
+# FROM debian:bookworm
 
 RUN apt-get -y update \
   && apt-get -y upgrade \
@@ -61,7 +62,7 @@ RUN cd  ${DBUILD} && wget -O ecbuild.zip \
   unzip ecbuild.zip && \
   cd ecbuild-* && mkdir build && cd build # && cmake ../ && make && make install
 
-RUN apt-get -y install git clang-format-14
+# RUN apt-get -y install git clang-format-14
 # RUN apt-get install libboost-system1.74-dev libboost-filesystem1.74-dev
 
 #RUN export ETGZ=ecFlow.zip HTTPE=https://confluence.ecmwf.int/download/attachments/8650755 \
@@ -69,22 +70,27 @@ RUN apt-get -y install git clang-format-14
 #    && unzip ${ETGZ}
     
 # RUN ln -sf ${DBUILD}/ecflow-develop ${DBUILD}/ecFlow-${ECFLOW_VERSION}-Source
-RUN apt-get -y install libboost1.74-all libboost1.74-all-dev
+# RUN apt-get -y install libboost1.74-all libboost1.74-all-dev
+RUN apt-get -y install libboost1.83-all libboost1.83-all-dev
 # RUN git clone https://github.com/Kitware/CMake.git && cd CMake/ && ./configure &&  make &&   make install &&   cmake --version &&   ln -sf /usr/local/bin/cmake /usr/bin/cmake
 ENV BOOST_ROOT=/usr
+RUN apt-get -y install git
 RUN mkdir -p ${WK} && cd ${WK} && git clone https://github.com/ecmwf/ecflow.git && cd ecflow && mkdir -p build && cd build
 RUN sed -i "s| Boost ${ECFLOW_BOOST_VERSION} REQUIRED| Boost REQUIRED |g" ${WK}/ecflow/CMakeLists.txt
 RUN sed -i "70i set ( ENABLE_STATIC_BOOST_LIBS OFF) " ${WK}/ecflow/CMakeLists.txt
 RUN sed -i "14i find_package( Boost ) " ${WK}/ecflow/CMakeLists.txt
 RUN sed -i '/^[^#]/ s/\(^.*set(ECFLOW_BOOST_VERSION.*$\)/#\ \1/' ${WK}/ecflow/CMakeLists.txt
-RUN apt-get -y install libboost1.74-dev git
-RUN apt-get update && apt-get install -y libboost1.74-all-dev
+# RUN apt-get -y install libboost1.74-dev git
+# RUN apt-get update && apt-get install -y libboost1.74-all-dev
 # RUN apt-get -y install libboost1.74-dev git # && apt install libboost-timer
+RUN apt-get -y install libboost1.83-dev git
+RUN apt-get update && apt-get install -y libboost1.83-all-dev
+RUN apt-get -y install libboost1.83-dev git # && apt install libboost-timer
 RUN apt-get update && apt-get install -y cmake build-essential
 RUN cd ${WK}/ecflow/build && cmake -DBOOST_ROOT=/usr -B . -S .. || :
 RUN cd ${WK}/ecflow/build && cmake -DBOOST_ROOT=/usr -B . -S .. && make -j2 && make install
 # RUN cd ${WK}/ecflow/build && cmake -B . -S .. # RUN cd ${WK}/ecflow/build && make -j2 && make install
-ENV TE=ecFlow-5.13.8-Source.tar.gz
+ENV TE=ecFlow-5.14.1-Source.tar.gz
 # network: uncomment following line
 RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && tar -xzvf ${TE}
 RUN cd ${WK}/ecflow/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
@@ -96,7 +102,7 @@ RUN cd ${WK}/ecflow/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_U
 RUN apt install -y rsync
 # environment variables for ecFlow server
 ENV ECFLOW_USER=ecflow \
-    ECF_PORT=2500 \
+    ECF_PORT=3141 \
     ECF_HOME=/home/ecflow/ecflow_server \
     HOME=/home/ecflow \
     HOST=ecflow \
@@ -111,7 +117,7 @@ RUN groupadd --system ${ECFLOW_USER} \
 # USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
-ENV TE=ecFlow-5.13.8-Source
-RUN mkdir $ECF_HOME && echo "5.13.8 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
+ENV TE=ecFlow-5.14.1-Source
+RUN mkdir $ECF_HOME && echo "5.14.1 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
 # RUN rsync $TE src
 # RUN mkdir build && cdbuild &&  cmake -DBOOST_ROOT=/usr -B $WDIR -S ../src/$TE > out.tmp 2>&!

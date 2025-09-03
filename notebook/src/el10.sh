@@ -14,7 +14,7 @@ ecflow_client --port $ECF_PORT --host localhost --ping  # explicit
 ecflow_client --help  # inline documentation
 
 # GUI
-ecflow_ui &  # start in background 
+wmctrl -l | grep ecFlowUI || ecflow_ui &  # start in background 
 
 # PYTHON api # inline documentation, press q
 # [[ $- == *i* ]] && python -c 'import ecflow;help(ecflow)'||echo 'not interactive'
