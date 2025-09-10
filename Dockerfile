@@ -114,7 +114,7 @@ EXPOSE ${ECF_PORT}
 RUN groupadd --system ${ECFLOW_USER} \
     && useradd --create-home --system --gid ${ECFLOW_USER} ${ECFLOW_USER} \
     && chown ecflow /home/ecflow && chgrp ecflow /home/ecflow
-# USER ecflow
+USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
 ENV TE=ecFlow-5.14.1-Source
