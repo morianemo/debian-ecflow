@@ -61,7 +61,7 @@ if __name__ == "__main__":
     DEFS = Defs()
     DEFS.add_suite(SUITE)
     CLIENT = Client(os.getenv("ECF_HOST", "localhost"),
-                           os.getenv("ECF_PORT", 2500))
+                           os.getenv("ECF_PORT", 3141))
     DEFS.generate_scripts()
     RESULT = DEFS.simulate(); # print(RESULT)
     NODE = '/' + SUITE.name()

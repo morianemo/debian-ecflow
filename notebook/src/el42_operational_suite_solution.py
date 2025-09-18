@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ operational suite example """
-from __future__ import print_function
 import os
 import ecflow
 from ecflow.ecf import (Defs, Defstatus, Suite, Family, Task, Edit,
@@ -57,5 +56,5 @@ DEFS.add(Suite(NAME).add(
 DEFS.generate_scripts()
 RESULT = DEFS.simulate(); # print(RESULT)
 CLIENT = Client(os.getenv("ECF_HOST", "localhost"),
-                       os.getenv("ECF_PORT", 2500))
+                       os.getenv("ECF_PORT", 3141))
 CLIENT.replace("/%s" % NAME, DEFS)

@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-from __future__ import print_function
+#!/usr/bin/env python3
 import os
 ECF_HOME = os.getenv("HOME") + "/ecflow_server"  # from ecflow_start.sh
 ECF_FILES = ECF_HOME + "/files"

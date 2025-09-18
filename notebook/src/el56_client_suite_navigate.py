@@ -1,6 +1,5 @@
-##!/usr/bin/env python
+##!/usr/bin/env python3
 """ suite navigation, starter """
-from __future__ import print_function
 import os
 import ecflow
 
@@ -23,7 +22,7 @@ def process(node):
 
 if __name__ == '__main__':
     CLIENT = ecflow.Client(os.getenv('ECF_HOST', "localhost"),
-                           os.getenv('ECF_PORT', "2500"))
+                           os.getenv('ECF_PORT', "3141"))
     CLIENT.ch_register(False, ["elearning", ])
     CLIENT.sync_local()
     DEFS = CLIENT.get_defs()

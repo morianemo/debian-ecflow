@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ if block as a family example """
 from ecflow.ecf import (Family, Task, Event, Trigger, Complete)
 

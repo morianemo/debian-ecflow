@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import os
 from ecflow.ecf import (  # Autocancel, Clock, Cron, Today, Edit, Extern, Repeat
-    Complete, Date, Day, Defs, Defstatus, Event, Family, Inlimit, Label, Late,
+    Complete, Date, Day, Defs, Defstatus, Event, Family, InLimit, Label, Late,
     Limit, Meter, Suite, Task, Time, Trigger, Edit, Client)
 HOME = os.getenv('HOME') + '/ecflow_server'
 
@@ -16,7 +16,7 @@ def create(name):
         Family("f1").add(
             Task("t1").add(
                 Label("info", ""),
-                Late("-c 01:00"),
+                # Late("-c 01:00"),
                 Meter("step", -1, 100)),
             Task("t2").add(
                 Meter("step", -1, 100),
@@ -71,5 +71,5 @@ if __name__ == "__main__":
     DEFS.generate_scripts()
     DEFS.simulate()
     CLIENT = Client(os.getenv("ECF_HOST", "localhost"),
-                    os.getenv("ECF_PORT", 2500))
+                    os.getenv("ECF_PORT", 3141))
     CLIENT.replace("/%s" % NAME, DEFS)

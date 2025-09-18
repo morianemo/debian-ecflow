@@ -19,7 +19,7 @@ def family_limit():
         Family("limit").add(
             Defstatus("complete"),
             Family("prio").add(  # on top: submitted first
-                Inlimit("../limits:prio"),
+                InLimit("../limits:prio"),
 
                 [Family("%03d" % step).add(
                     Task("process"), Edit(STEP=step))
@@ -37,7 +37,7 @@ def family_limiter():
     return (
         Family("limiter").add(
             Limit("total", 10),
-            Inlimit("total"),
+            InLimit("total"),
 
             Task("alarm").add(
                 Complete("limits eq complete"),

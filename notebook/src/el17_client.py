@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-from __future__ import print_function
+#!/usr/bin/env python3
 import os
 import ecflow
 # When no arguments specified, uses ECF_HOST and/or ECF_PORT,

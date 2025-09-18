@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ a dedicated class to communicate with ecFlow server """
-from __future__ import print_function
 import os
 import signal
 import sys
-import ecf as ec
+from ecflow import Client
+# import ecf as ec
 MICRO = "$$"  # double dollar to please ecFlow micro character balance
 
 
@@ -19,7 +19,7 @@ class Child(object):
         if MICRO[0] in env["ECF_PORT"]:
             self.client = None
             return
-        self.client = ec.Client()
+        self.client = Client()  #         self.client = ec.Client()
         self.client.set_child_timeout(20)
         self.client.set_host_port(env["ECF_NODE"], int(env["ECF_PORT"]))
         self.client.set_child_pid(os.getpid())

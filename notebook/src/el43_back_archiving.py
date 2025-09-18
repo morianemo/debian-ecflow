@@ -21,5 +21,5 @@ DEFS.add(Suite(NAME).add(
 # print(DEFS); DEFS.generate_scripts(); 
 RESULT = DEFS.simulate(); print(RESULT)
 CLIENT = Client(os.getenv("ECF_HOST", "localhost"),
-                       os.getenv("ECF_PORT", 2500))
+                       os.getenv("ECF_PORT", 3141))
 CLIENT.replace("/%s" % NAME, DEFS)
