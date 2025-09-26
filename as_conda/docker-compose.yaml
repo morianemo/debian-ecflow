@@ -1,0 +1,12 @@
+version: '3'
+services:
+  ecflow-server:
+    image: ecflow-as-conda:latest
+    ports:
+      - "3141:3141"
+    volumes:
+      - ./course:/home/ecflow/ecflow_server
+    restart: always
+    environment:
+      - ECF_HOME=/home/ecflow/ecflow_server
+

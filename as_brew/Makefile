@@ -1,6 +1,6 @@
 CONT=ecflow-as-brew
 LAST=ecflow-as-brew-last
-PORT=2500
+PORT=3141
 MNT = /home/ecflow/extern
 STE = test
 TAG = ${CONT}
@@ -29,7 +29,9 @@ load:
 	docker run --net=host -ti ${CONT} ecflow_client --port ${PORT} --begin ${STE}
 	docker run --net=host -ti ${CONT} ecflow_client --port ${PORT} --halt yes
 svr:
-	docker run --net=host -ti ${CONT} ecflow_start.sh -p ${PORT}
+	docker run --net=host -ti ${CONT} ash ecflow_start.sh -p ${PORT}
+stop:
+	docker run --net=host -ti ${CONT} ash ecflow_stop.sh -p ${PORT}
 server:
 	docker run --net=host -ti ${CONT} ecflow_server --port ${PORT}
 view:
@@ -46,3 +48,5 @@ deploy:
 	docker login
 	docker tag ${TAG} eowyn/${TAG}:latest
 	docker push eowyn/${TAG}
+hello:
+	docker run hello-world

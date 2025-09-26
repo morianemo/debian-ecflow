@@ -1,15 +1,21 @@
-FROM homebrew/brew
-RUN brew install ecflow-ui 
-ENV ECFLOW_USER=ecflow \
-    ECF_PORT=3141 \
-    ECF_HOME=/home/ecflow/ecflow_server \
-    HOME=/home/ecflow \
-    HOST=ecflow \
-    LANG=en_US.UTF-8\
-    TZ=UTC
-USER root    
-RUN groupadd --system ${ECFLOW_USER} \
-    && useradd --create-home --gid ${ECFLOW_USER} ${ECFLOW_USER} \
-    && chown ${ECFLOW_USER} /home/${ECFLOW_USER} && chgrp ${ECFLOW_USER} /home/${ECFLOW_USER}
-USER ecflow
-ENV PATH="/home/linuxbrew/.linuxbrew/bin:${PATH}"
+# Image de base Ubuntu ARM64
+FROM --platform=linux/arm64 ubuntu:22.04
+
+# Installer les dépendances nécessaires
+RUN apt-get update && apt-get install -y \
+    build-essential curl file git \
+    procps
+
+# Installer Homebrew (Linux ARM64)
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Ajouter Homebrew au PATH
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/Homebrew/bin:${PATH}"
+
+# Vérifier l'installation
+RUN brew --version
+# RUN brew install ecflow-ui
+RUN brew install --build-from-source qt6
+RUN brew install --build-from-source ecflow-ui
+RUN ecflow_client --version
+
