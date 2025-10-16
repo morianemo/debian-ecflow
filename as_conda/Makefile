@@ -1,8 +1,10 @@
 CONT = ecflow-as-conda
 PORT = 3141
-all: asconda
+HOST = localhost
+# HOST = docker-debian-ecflow  # compose
+all: as_conda
 
-asconda:
+as_conda:
 	docker build -t ${CONT} .
 mac:
 	xhost +
@@ -23,21 +25,29 @@ eyes:
 ash:
 	docker run --net=host -ti ${CONT} bash
 ping:
-	docker run --net=host -ti ${CONT} ecflow_client --ping --port ${PORT}
+	docker run --net=host -ti ${CONT} ecflow_client --ping --port ${PORT} --host ${HOST}
 clt:
 	docker run --net=host -ti ${CONT} ecflow_client --help
 stop:
-	docker run --net=host -ti ${CONT} /opt/conda/bin/ecflow_stop.sh -p ${PORT}
+	docker run --net=host -ti ${CONT} bash /opt/conda/bin/ecflow_stop.sh -p ${PORT}
 svr:
-	docker run --net=host -ti ${CONT} /opt/conda/bin/ecflow_start.sh -p ${PORT}
-	# docker run --net=host -e ECFLOW_DIR -v /opt/conda/bin/ -ti ${CONT} bash /opt/conda/bin/ecflow_start.sh -p ${PORT}
-lview:
+	docker run --net=host -ti ${CONT} /opt/conda/bin/ecflow_start.sh -p ${PORT} 
+server:
+	docker run --net=host -e ECFLOW_BINDIR=/opt/conda/bin -ti ${CONT} /tmp/ecflow_start_nohup.sh -N -p ${PORT}
+echo:
+	docker run --net=host -e ECFLOW_BINDIR=/opt/conda/bin -ti ${CONT} 'echo ${ECFLOW_BINDIR}'
+viewm: 
 	xhost +local:docker
 	docker run -e DISPLAY --net=host -ti ${CONT} ecflow_ui  # linux
-mview:
+xhost:
 	xhost +local:docker
-        docker run -e DISPLAY=host.docker.internal:0 -v /tmp/.Xauthority:/tmp/.Xauthority  --net=host -ti ${CONT} ecflow_ui
-test:	clt mview svr
+viewl:
+	xhost +local:docker
+	docker run -e DISPLAY -v /tmp/.Xauthority:/tmp/.Xauthority --net=host -ti ${CONT} /opt/conda/bin/ecflow_ui
+mash:
+	xhost +local:docker
+	docker run -e DISPLAY -v /tmp/.Xauthority:/tmp/.Xauthority --net=host -ti ${CONT} bash
+test:	clt svr
 deploy:
 	docker login
 	docker tag ${CONT} eowyn/${CONT}:latest

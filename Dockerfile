@@ -54,6 +54,7 @@ ENV TE=ecFlow-5.14.1-Source.tar.gz
 RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && tar -xzvf ${TE}
 RUN cd ${WK}/ecflow/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
 RUN apt install -y rsync
+COPY ecflow_start_nohup.sh /tmp/ecflow_start_nohup.sh
 # environment variables for ecFlow server
 ENV ECFLOW_USER=ecflow \
     ECF_PORT=3141 \
