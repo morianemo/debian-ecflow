@@ -49,7 +49,7 @@ server:
 	docker run --net=${NET} -ti ${CONT} ecflow_server --port ${PORT}
 viewl:
 	xhost +local:docker
-        docker run -e DISPLAY=${DISPLAY} -v /tmp/.X11-unix:/tmp/.X11-unix --net=${NET} -ti ${CONT} ecflow_ui
+	docker run -e DISPLAY=${DISPLAY} -v /tmp/.X11-unix:/tmp/.X11-unix --net=${NET} -ti ${CONT} ecflow_ui
 viewm:
 	xhost +local:docker
 	docker run -e DISPLAY=host.docker.internal:0 -v /tmp/.Xauthority:/tmp/.Xauthority --net=${NET} -ti ${CONT} ecflow_ui
