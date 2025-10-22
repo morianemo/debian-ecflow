@@ -5,7 +5,7 @@ import ecflow
 # Explicitly set host and port using the same client
 # For alternative argument list see ecflow.Client.set_host_port()
 HOST = os.getenv("ECF_HOST", "localhost")
-PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
+PORT = int(os.getenv("ECF_PORT", 3141))  # "%d" % (1500 + os.getuid())))
 CLIENT = ecflow.Client(HOST + ":%d" % PORT)
 try:
     CLIENT.ping()

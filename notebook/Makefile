@@ -1,5 +1,5 @@
 all:
-	jupyter notebook ecFlow.ipynb
+	jupyter lab ecFlow.ipynb
 cli:
 	jupyter nbconvert --to script ecFlow.ipynb
 pdf:

@@ -50,7 +50,7 @@ if __name__ == '__main__':
         print(SCRIPT_TEMPLATE, file=script)
 
     HOST = os.getenv("ECF_HOST", "localhost")
-    PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
+    PORT = int(os.getenv("ECF_PORT", 3141))  # "%d" % (1500 + os.getuid())))
     CLIENT = Client(HOST, PORT)
 
     NODE = "/%s/f5" % NAME  # replace top

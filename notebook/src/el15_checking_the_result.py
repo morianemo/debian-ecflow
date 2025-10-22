@@ -3,7 +3,7 @@
 import os
 import ecflow
 HOST = os.getenv("ECF_HOST", "localhost")
-PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
+PORT = int(os.getenv("ECF_PORT", 3141))  # "%d" % (1500 + os.getuid())))
 KEY = HOST + ":%d" % PORT
 # multiple ways to create CLIENT: python -c "import ecflow;help(ecflow.Client)"
 CLIENT = ecflow.Client(KEY)

@@ -36,7 +36,7 @@ if __name__ == '__main__':
         print(SCRIPT_TEMPLATE, file=t2)
 
     HOST = os.getenv("ECF_HOST", "localhost")
-    PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
+    PORT = int(os.getenv("ECF_PORT", 3141))  # "%d" % (1500 + os.getuid())))
     CLIENT = ecflow.Client(HOST, PORT)
 
     NODE = "/" + NAME  # this might be a family, a task path

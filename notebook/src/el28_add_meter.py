@@ -42,7 +42,7 @@ if __name__ == '__main__':
         with open(ECF_HOME + "/files/t%d.ecf" % num, "w") as t:
             print(t)
     HOST = os.getenv("ECF_HOST", "localhost")
-    PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
+    PORT = int(os.getenv("ECF_PORT", 3141))  # "%d" % (1500 + os.getuid())))
     CLIENT = Client(HOST, PORT)
 
     NODE = "/%s/f2" % NAME  # replace only family f2

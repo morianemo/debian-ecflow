@@ -4,7 +4,7 @@ import ecflow
 from ecflow import Client, Defs
 # When no arguments is specified, Client uses bash variables ECF_HOST, ECF_PORT
 HOST = os.getenv("ECF_HOST", "localhost")
-PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
+PORT = int(os.getenv("ECF_PORT", 3141))  # "%d" % (1500 + os.getuid())))
 NAME = os.getenv("SUITE", "elearning")
 # ecflow_start.sh gives port number 1500+uid:
 CLIENT = Client(HOST + ":%d" % PORT)

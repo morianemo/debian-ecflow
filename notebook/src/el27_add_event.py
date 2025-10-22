@@ -38,7 +38,7 @@ if __name__ == '__main__':
         with open(ECF_HOME + "/files/%s.ecf" % task, "w") as t:
             print(SCRIPT_TEMPLATE, file=t)
     HOST = os.getenv("ECF_HOST", "localhost")
-    PORT = int(os.getenv("ECF_PORT", "%d" % (1500 + os.getuid())))
+    PORT = int(os.getenv("ECF_PORT", 3141))  # "%d" % (1500 + os.getuid())))
     CLIENT = Client(HOST, PORT)
     NODE = "/" + NAME  # replace top
     CLIENT.replace(NODE, DEFS)
