@@ -32,6 +32,7 @@ ping:
 	docker run --net=${NET} $(ADDHOST) -ti ${CONT} ecflow_client --ping --port ${PORT} --host $(HOST)
 clt:
 	docker run --net=${NET} -ti ${CONT} ecflow_client --help
+	docker run --net=${NET} -ti ${CONT} ecflow_client --version
 test:	clt svr
 load:
 	echo "suite ${STE}" > ${STE}.def
@@ -61,7 +62,7 @@ conv:
 install-slim:
 	brew install docker-slim
 slim:
-	slim build --target ${TAG}:latest --tag ${TAG}:light --http-probe=false --exec "ecflow_server --version; ecflow_client --help ; ecflow_ui --h"
+	slim build --target ${TAG}:latest --tag ${TAG}:light --http-probe=false --exec "ecflow_server --version; ecflow_client --help ; ecflow_ui --h; ecflow_client --version"
 deploy:
 	docker login
 	docker tag ${TAG} eowyn/${TAG}:latest
