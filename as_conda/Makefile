@@ -1,5 +1,6 @@
 CONT = ecflow-as-conda
-PORT = 3141
+TAG = ${CONT}
+ECF_PORT = 3141
 HOST = localhost
 # HOST = docker-debian-ecflow  # compose
 all: as_conda
@@ -25,20 +26,24 @@ eyes:
 ash:
 	docker run --net=host -ti ${CONT} bash
 ping:
-	docker run --net=host -ti ${CONT} ecflow_client --ping --port ${PORT} --host ${HOST}
+	docker run --net=host -ti ${CONT} ecflow_client --ping --port ${ECF_PORT} --host ${HOST}
 clt:
 	docker run --net=host -ti ${CONT} ecflow_client --help
+	docker run --net=host -ti ${CONT} ecflow_client --version
 stop:
-	docker run --net=host -ti ${CONT} bash /opt/conda/bin/ecflow_stop.sh -p ${PORT}
+	docker run --net=host -ti ${CONT} bash /opt/conda/bin/ecflow_stop.sh -p ${ECF_PORT}
 svr:
-	docker run --net=host -ti ${CONT} /opt/conda/bin/ecflow_start.sh -p ${PORT} 
+	docker run --net=host -ti ${CONT} /opt/conda/bin/ecflow_start.sh -p ${ECF_PORT} 
 server:
-	docker run --net=host -e ECFLOW_BINDIR=/opt/conda/bin -ti ${CONT} /tmp/ecflow_start_nohup.sh -N -p ${PORT}
+	docker run --net=host -e ECFLOW_BINDIR=/opt/conda/bin -ti ${CONT} /opt/conda/bin/ecflow_start_nohup.sh -N -p ${ECF_PORT}
 echo:
 	docker run --net=host -e ECFLOW_BINDIR=/opt/conda/bin -ti ${CONT} 'echo ${ECFLOW_BINDIR}'
 viewm: 
 	xhost +local:docker
 	docker run -e DISPLAY --net=host -ti ${CONT} ecflow_ui  # linux
+svr: start
+start:
+	docker run --net=host -e ECFLOW_BINDIR=/opt/conda/bin -ti ${TAG} /opt/conda/bin/ecflow_start_nohup.sh -N -p ${ECF_PORT}
 xhost:
 	xhost +local:docker
 viewl:

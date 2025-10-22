@@ -19,17 +19,12 @@
 ###        Will start the ecflow_server in the background, using user id
 ###        to make a unique port number.
 
-if [[ $(hostname) = a[a-d]?-*.bullx && -z ${ECFLOW_ALLOW_LOCAL+x} ]]; then
-    echo "To use an ecFlow server on the Atos HPC at ECMWF, please read instructions: https://confluence.ecmwf.int/display/UDOC/HPC2020%3A+Using+ecFlow"
-    exit 0
-fi
-
 #===============================================================================
 # Get the absolute path THIS script. use it to locate ecflow_client and ecflow_server
 # This avoids mixing 4/5 version of ecflow.
 # and need absolute since we change dir later on.
 #
-if [[ -z ECFLOW_BINDIF ]]; then
+if [ -z ECFLOW_BINDIR ]; then
   ECFLOW_BINDIR="$( cd "$(dirname "$0")" ; pwd -P )" 
 fi
 echo "-----> ${ECFLOW_BINDIR} <-------"
@@ -58,7 +53,7 @@ usage()
     echo "       -s        enable ssl server. Requires client/server built with openssl libs"
     echo "       -h        print this help page"
     echo "       -p <num>  specify server port number(ECF_PORT number)  - default 1500+<UID> | 1000+<UID> for backup server"
-    echo "       -N        doker mode, no nohup"
+    echo "       -N        docker mode, no nohup"
 }
 
 #==========================================================================
@@ -99,7 +94,7 @@ fi
 # =================================================================================
 # port_number is set based on the unique users numeric uid.
 
-username=`id -u`
+username=$(id -u)
 
 if [ -z "$ecf_port" ] ; then
 
@@ -108,7 +103,7 @@ if [ -z "$ecf_port" ] ; then
    else
      base=1500
    fi
-   port_number=$((base+username))
+   ((port_number=base+username))
 
 else
    port_number=$ecf_port
@@ -137,11 +132,12 @@ THERE=KO
 ${ECFLOW_BINDIR}/ecflow_client --port=$ECF_PORT --host=$host --ping && THERE=OK
 if [[ $THERE == OK ]]; then
   echo "server is already started"
-  res="$(ps -lf -u $USER | grep ecflow_server | grep -v grep)"
+  # res="$(ps -lf -u $USER | grep ecflow_server | grep -v grep)"
+  res="$(ps -gaux | grep ecflow_server | grep -v grep)"
   # which netstat && res="$(netstat -lnptu 2>/dev/null | grep ecflow | grep $ECF_PORT)"
   echo "$res $(${ECFLOW_BINDIR}/ecflow_client --stats)"
   if [ "$res" == "" ] ; then
-    mail $USER -s "server is already started - server hijack?" <<EOF
+    which mail && mail $USER -s "server is already started - server hijack?" <<EOF
 Hello.
 
 there was an attempt to start the ecFlow server while port is already in use
@@ -149,7 +145,7 @@ by another user, see the ecflow stats output below.
 
 $(${ECFLOW_BINDIR}/ecflow_client --stats)
 EOF
-    exit 1
+    exit 0
   fi
   exit 0 || :
 fi

@@ -53,7 +53,7 @@ ENV TE=ecFlow-5.15.1-Source.tar.gz
 RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && tar -xzvf ${TE} || true
 RUN cd ${WK}/ecflow/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
 RUN apt install -y rsync
-COPY ecflow_start_nohup.sh /tmp/ecflow_start_nohup.sh
+COPY ecflow_start_nohup.sh /usr/local/bin/ecflow_start_nohup.sh
 # environment variables for ecFlow server
 ENV ECFLOW_USER=ecflow \
     ECF_PORT=3141 \
@@ -71,4 +71,4 @@ RUN groupadd --system ${ECFLOW_USER} \
 USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
-RUN mkdir $ECF_HOME && echo "${TE} 5.15.1 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
+RUN mkdir $ECF_HOME && echo "5.15.1 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists

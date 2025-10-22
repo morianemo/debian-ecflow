@@ -1,6 +1,6 @@
 CONT=debian-ecflow
 LAST=ecflow-debian-last
-PORT=3141
+ECF_PORT=3141
 MNT = /home/ecflow/extern
 STE = test
 TAG = ${CONT}
@@ -29,7 +29,7 @@ mash:
 	# docker run -e DISPLAY -v /tmp/.Xauthority:/tmp/.Xauthority --net=host -ti ${CONT} bash
 	docker run -e DISPLAY --net=host -ti ${CONT} bash
 ping:
-	docker run --net=${NET} $(ADDHOST) -ti ${CONT} ecflow_client --ping --port ${PORT} --host $(HOST)
+	docker run --net=${NET} $(ADDHOST) -ti ${CONT} ecflow_client --ping --port ${ECF_PORT} --host $(HOST)
 clt:
 	docker run --net=${NET} -ti ${CONT} ecflow_client --help
 	docker run --net=${NET} -ti ${CONT} ecflow_client --version
@@ -38,19 +38,20 @@ load:
 	echo "suite ${STE}" > ${STE}.def
 	echo "defstatus suspended" >> ${STE}.def
 	echo "task run" >> ${STE}.def # we shall add head.h tail.h run.ecf
-	docker run --net=${NET} -ti ${CONT} ecflow_client --port ${PORT} --delete=_all_ yes
-	docker run --net=${NET} --volume $(PWD):${MNT} -ti ${CONT} ecflow_client --port ${PORT} --load ${MNT}/${STE}.def
-	docker run --net=${NET} -ti ${CONT} ecflow_client --port ${PORT} --begin ${STE}
-	docker run --net=${NET} -ti ${CONT} ecflow_client --port ${PORT} --halt yes
-svr:
-	docker run --net=${NET} -d -ti ${CONT} ecflow_start.sh -p ${PORT}
+	docker run --net=${NET} -ti ${CONT} ecflow_client --port ${ECF_PORT} --delete=_all_ yes
+	docker run --net=${NET} --volume $(PWD):${MNT} -ti ${CONT} ecflow_client --port ${ECF_PORT} --load ${MNT}/${STE}.def
+	docker run --net=${NET} -ti ${CONT} ecflow_client --port ${ECF_PORT} --begin ${STE}
+	docker run --net=${NET} -ti ${CONT} ecflow_client --port ${ECF_PORT} --halt yes
 stop:
-	docker run --net=${NET} -d -ti ${CONT} ecflow_stop.sh -p ${PORT}
+	docker run --net=${NET} -d -ti ${CONT} ecflow_stop.sh -p ${ECF_PORT}
 server:
-	docker run --net=${NET} -ti ${CONT} ecflow_server --port ${PORT}
+	docker run --net=${NET} -ti ${CONT} ecflow_server --port ${ECF_PORT}
 viewl:
 	xhost +local:docker
 	docker run -e DISPLAY=${DISPLAY} -v /tmp/.X11-unix:/tmp/.X11-unix --net=${NET} -ti ${CONT} ecflow_ui
+svr: start
+start:
+	docker run --net=host -e ECFLOW_BINDIR=/usr/local/bin -ti ${TAG} /usr/local/bin//ecflow_start_nohup.sh -N -p ${ECF_PORT}
 viewm:
 	xhost +local:docker
 	docker run -e DISPLAY=host.docker.internal:0 -v /tmp/.Xauthority:/tmp/.Xauthority --net=${NET} -ti ${CONT} ecflow_ui
