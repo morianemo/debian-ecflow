@@ -28,7 +28,7 @@ RUN ln -sf /usr/lib/x86_64-linux-gnu /usr/lib64
 RUN apt-get -y update --fix-missing
 RUN apt-get -y install --fix-missing apt-utils qtscript5-dev libssl-dev unzip
 ENV PATH=/root/bin:$PATH CMAKE_MODULE_PATH=/root/cmake:/root
-
+# RUN apt install -y rsync
 RUN apt-get -y install libqt5widgets5 libqt5network5 libqt5gui5 libqt5svg5-dev libqt5charts5-dev doxygen
 RUN cd  ${DBUILD} && wget -O ecbuild.zip \
   https://github.com/ecmwf/ecbuild/archive/refs/heads/develop.zip && \
@@ -49,10 +49,9 @@ RUN apt-get -y install libboost1.83-dev git # && apt install libboost-timer
 RUN apt-get update && apt-get install -y cmake build-essential
 RUN cd ${WK}/ecflow/build && cmake -DBOOST_ROOT=/usr -B . -S .. || :
 RUN cd ${WK}/ecflow/build && cmake -DBOOST_ROOT=/usr -B . -S .. && make -j2 && make install
-ENV TE=ecFlow-5.15.2-Source.tar.gz
+ENV TE=ecFlow-5.16.0-Source.tar.gz
 RUN cd /tmp/ecflow_build && wget --output-document=${TE} ${HTTP}/${TE}?api=v2 && tar -xzvf ${TE} || true
 RUN cd ${WK}/ecflow/build && cmake .. -DCMAKE_MODULE_PATH=/root/cmake -DENABLE_UI=ON
-RUN apt install -y rsync
 COPY ecflow_start_nohup.sh /usr/local/bin/ecflow_start_nohup.sh
 # environment variables for ecFlow server
 ENV ECFLOW_USER=ecflow \
@@ -71,4 +70,4 @@ RUN groupadd --system ${ECFLOW_USER} \
 USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
-RUN mkdir $ECF_HOME && echo "5.15.2 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
+RUN mkdir $ECF_HOME && echo "5.16.0 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists

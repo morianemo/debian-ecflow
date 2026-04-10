@@ -30,7 +30,7 @@ EXPOSE ${ECF_PORT}RUN groupadd --system ${ECFLOW_USER} \
 USER ecflow
 WORKDIR /home/ecflow
 ENV DISPLAY=:0
-RUN mkdir $ECF_HOME && echo "5.15.1 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
+RUN mkdir $ECF_HOME && echo "5.15.2 # version" > $ECF_HOME/ecf.lists  && echo "$ECFLOW_USER" >> $ECF_HOME/ecf.lists
 # RUN conda env create -f /tmp/environment.yml && conda clean -afy
 # SHELL ["conda", "run", "-n", "menv", "/bin/bash", "-c"]
 # CMD ["python"]
